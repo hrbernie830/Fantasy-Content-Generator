@@ -1,18 +1,12 @@
-import { GeneratorModal } from 'editor/GeneratorModal';
+import { GeneratorModal } from 'src/main/main-modal';
 import { MarkdownView, Notice, Plugin, Editor } from 'obsidian';
-import { InlineGeneratorSuggester } from "editor/InlineGenerator";
-import { FantasyPluginSettings, possibleOptions } from 'settings/Datatypes';
-import { DEFAULT_SETTINGS } from 'settings/DefaultSetting';
-import { SettingTab } from 'settings/SettingsTab';
+import { FantasyPluginSettings } from 'src/settings/Datatypes';
+import { DEFAULT_SETTINGS } from 'src/settings/DefaultSetting';
+import { SettingTab } from 'src/settings/SettingsTab';
 
 export default class FantasyPlugin extends Plugin {
 	settings: FantasyPluginSettings;
 	currentEditor: Editor | null = null;
-
-	//Function used to return the array of options for the suggester.
-	getOptionsForSuggest(): string[] {
-		return possibleOptions;
-	}
 
 	async onload() {  
 		await this.loadSettings();
@@ -29,9 +23,6 @@ export default class FantasyPlugin extends Plugin {
 				this.currentEditor = null;
 			}
 		});
-
-		//Register the InlineGeneratorSuggester to the Editor suggester.
-		this.registerEditorSuggest(new InlineGeneratorSuggester(this.getOptionsForSuggest, this));
 
 		// This creates an icon in the left ribbon to access the modal for the Fantasy Content Generator.
 		this.addRibbonIcon('book', 'Fantasy Generators', (evt: MouseEvent) => {
