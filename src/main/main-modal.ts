@@ -1,7 +1,6 @@
 import { App, DropdownComponent, Modal, Setting } from "obsidian";
 import FantasyPlugin from "main";
 import { NPCGeneratorComponent } from "src/generators/npc-generator/view/npc-generator-component";
-import { InnGeneratorComponent } from "src/generators/inn-generator/view/inn-generator-component";
 import { generateDrink } from "src/generators/drink-generator/service/drink-generation-service";
 import { generateLoot } from "src/generators/loot-generator/service/loot-generation-service";
 import { LootGeneratorSettings } from "src/generators/loot-generator/model/LootGeneratorSettings";
@@ -9,6 +8,8 @@ import { generateMetal } from "src/generators/metal-generator/service/metal-gene
 import { Loot } from "src/generators/loot-generator/model/Loot";
 import { generateReligion } from "src/generators/religion-generator/service/religion-generation-service";
 import { generateShipName } from "src/generators/ship-generator/service/ship-generation-service";
+import { GeneratorComponent } from "src/generators/generator/view/generator-component";
+import { InnGeneratorService } from "src/generators/inn-generator/service/inn-generation-service";
 
 const generatorDisplayTypes: string[] = ["NPC", "Inn", "Drink", "Religion", "Metal", "Ship"]
 
@@ -50,8 +51,8 @@ export class GeneratorModal extends Modal {
   
         this.optionsDiv = contentEl.createDiv();
         // default
+        
         const npcGeneratorComponent = new NPCGeneratorComponent(this.contentDiv, this.plugin.settings.nameFileLocation, this.plugin.settings.funFactFileLocation);
-        const innGenerationComponent = new InnGeneratorComponent(this.contentDiv, this.plugin.settings.innSettings);
         
         select.onChange((typeSelected) => {
             this.contentDiv.innerHTML = "";
@@ -61,7 +62,7 @@ export class GeneratorModal extends Modal {
                     npcGeneratorComponent.createView();
                     break;
                 case "inn":
-                    innGenerationComponent.createView();
+                    new GeneratorComponent(this.contentDiv, new InnGeneratorService(), this.plugin.settings.innSettings);
                     break;
                 case "ship":
                     this.generatorCustomSettings(this.optionsDiv, generateShipName);
