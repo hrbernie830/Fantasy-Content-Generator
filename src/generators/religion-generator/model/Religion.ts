@@ -1,10 +1,7 @@
-export class Religion {
-    public name?: string;
+import { BaseGeneratedItem } from "src/generators/base-generator/model/base-generated-item";
 
-    constructor(name: string) {
-        this.name = name;
-    }
+export class Religion extends BaseGeneratedItem {
+
 }
-
 
 export{}

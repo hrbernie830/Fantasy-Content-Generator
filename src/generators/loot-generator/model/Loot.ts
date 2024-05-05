@@ -1,14 +1,7 @@
-export class Loot {
-    public name?: string;
+import { BaseGeneratedItem } from "src/generators/base-generator/model/base-generated-item";
 
-    constructor(name: string) {
-        this.name = name;
-    }
+export class Loot extends BaseGeneratedItem {
 
-    getName() {
-        return this.name ? this.name : '';
-    }
 }
-
 
 export{}

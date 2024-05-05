@@ -1,9 +1,7 @@
-export class Metal {
-    public name?: string;
+import { BaseGeneratedItem } from "src/generators/base-generator/model/base-generated-item";
 
-    constructor(name: string) {
-        this.name = name;
-    }
+export class Metal extends BaseGeneratedItem {
+
 }
 
 
