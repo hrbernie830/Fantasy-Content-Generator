@@ -1,17 +1,15 @@
 import { App, DropdownComponent, Modal, Setting } from "obsidian";
 import FantasyPlugin from "main";
 import { NPCGeneratorComponent } from "src/generators/npc-generator/view/npc-generator-component";
-import { generateDrink } from "src/generators/drink-generator/service/drink-generation-service";
-import { generateLoot } from "src/generators/loot-generator/service/loot-generation-service";
-import { LootGeneratorSettings } from "src/generators/loot-generator/model/LootGeneratorSettings";
-import { generateMetal } from "src/generators/metal-generator/service/metal-generation-service";
-import { Loot } from "src/generators/loot-generator/model/Loot";
-import { generateReligion } from "src/generators/religion-generator/service/religion-generation-service";
-import { generateShipName } from "src/generators/ship-generator/service/ship-generation-service";
-import { GeneratorComponent } from "src/generators/generator/view/generator-component";
+import { DrinkGeneratorService } from "src/generators/drink-generator/service/drink-generation-service";
+import { LootGeneratorService } from "src/generators/loot-generator/service/loot-generation-service";
+import { MetalGeneratorService } from "src/generators/metal-generator/service/metal-generation-service";
+import { ShipGeneratorService } from "src/generators/ship-generator/service/ship-generation-service";
+import { BaseGeneratorComponent } from "src/generators/base-generator/view/base-generator-component";
 import { InnGeneratorService } from "src/generators/inn-generator/service/inn-generation-service";
+import { ReligionGeneratorService } from "src/generators/religion-generator/service/religion-generation-service";
 
-const generatorDisplayTypes: string[] = ["NPC", "Inn", "Drink", "Religion", "Metal", "Ship"]
+const generatorDisplayTypes: string[] = ["NPC", "Inn", "Drink", "Religion", "Metal", "Ship", "Loot (experimental)"]
 
 export class GeneratorModal extends Modal {
     result: string | Error;
@@ -22,12 +20,12 @@ export class GeneratorModal extends Modal {
         this.onSubmit = onSubmit;
         this.plugin = plugin;
 
-  }
+    }
 
-  mainDiv: HTMLElement;
-  optionsDiv: HTMLElement;
-  contentDiv: HTMLElement;
-  generatorSelectDiv: HTMLElement;
+    mainDiv: HTMLElement;
+    optionsDiv: HTMLElement;
+    contentDiv: HTMLElement;
+    generatorSelectDiv: HTMLElement;
 
     onOpen() {
         this.createGeneratorSelectionDropdown();
@@ -35,7 +33,6 @@ export class GeneratorModal extends Modal {
 
     createGeneratorSelectionDropdown() {
         const { contentEl } = this;
-        const amountToGen = 1;
 
         contentEl.innerHTML = "";
   
@@ -57,80 +54,33 @@ export class GeneratorModal extends Modal {
         select.onChange((typeSelected) => {
             this.contentDiv.innerHTML = "";
             this.optionsDiv.innerHTML = "";
-            switch (typeSelected) {
+            switch (typeSelected.toLowerCase()) {
                 case "npc":
                     npcGeneratorComponent.createView();
                     break;
                 case "inn":
-                    new GeneratorComponent(this.contentDiv, new InnGeneratorService(), this.plugin.settings.innSettings);
+                    new BaseGeneratorComponent(this.contentDiv, new InnGeneratorService(), this.plugin.settings.innSettings);
                     break;
                 case "ship":
-                    this.generatorCustomSettings(this.optionsDiv, generateShipName);
+                    new BaseGeneratorComponent(this.contentDiv, new ShipGeneratorService());
                     break;
                 case "religion":
-                    this.generatorCustomSettings(this.optionsDiv, generateReligion);
+                    new BaseGeneratorComponent(this.contentDiv, new ReligionGeneratorService());
                     break;
                 case "drink":
-                    this.generatorCustomSettings(this.optionsDiv, generateDrink, this.plugin.settings.drinkSettings);
+                    new BaseGeneratorComponent(this.contentDiv, new DrinkGeneratorService(), this.plugin.settings.drinkSettings);
                     break;
                 case "metal":
-                    this.generatorCustomSettings(this.optionsDiv, generateMetal);
+                    new BaseGeneratorComponent(this.contentDiv, new MetalGeneratorService());
                     break;
-                case "loot":
-                    this.generatorLootSettings(this.optionsDiv, amountToGen, generateLoot, this.plugin.settings.enableCurrency, this.plugin.settings.currencyFrequency, this.plugin.settings.currencyTypes);
+                case "loot (experimental)":
+                    new BaseGeneratorComponent(this.contentDiv, new LootGeneratorService(), this.plugin.settings);
                     break;
                 default:
                     this.optionsDiv.innerHTML = "";
                     break;
            } 
         });
-    }
-    
-    generatorLootSettings(settingsdiv: HTMLElement, genAmount: number, generatorFunction: (enableCurrency:boolean, currencyFrequency: number, currencyTypes: object[], lootTable: LootGeneratorSettings) => Loot, enableCurrency:boolean, currencyFrequency: number, currencyTypes: object[]) {
-        settingsdiv.empty();
-        settingsdiv.createEl("h3", { text: "Settings" });
-        genAmount = 1;
-        let list = '';
-        new Setting(settingsdiv)
-        .setName("Amount to Generate")
-        .addText((text) => {
-        text.onChange((value) => genAmount = Number(value));
-        })
-            .addButton((btn) =>
-                btn
-                    .setButtonText("Generate")
-                    .setCta()
-                    .onClick(() => {
-                    for (let index = 0; index < genAmount; index++) {
-                    
-                    const shipName: Loot = generatorFunction(enableCurrency, currencyFrequency, currencyTypes, this.plugin.settings.lootSettings);
-                    
-                    new Setting(settingsdiv).addToggle((toggle) => {
-                        toggle.onChange((value) => {
-                            if (value === true) {    
-                                list += shipName + "\n";
-                            } else {
-                                const fullCIndex = list.indexOf(shipName.getName());
-                                list = fullCIndex === -1 ? list : list.slice(0, fullCIndex) + list.slice(fullCIndex + shipName.getName().length);
-                            }
-                        })
-                            .setValue(true);
-                    }).setName(shipName.getName());
-                
-                }
-                })).addButton((btn) =>
-                btn
-                    .setButtonText("Copy")
-                    .setCta()
-                        .onClick(() => {
-                        if (list === '') {
-                            this.result = new Error("Nothing Was Selected to Copy.");
-                        } else {
-                            this.result = list;
-                        }     
-                        this.close();
-                        this.onSubmit(this.result);
-                    }));
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

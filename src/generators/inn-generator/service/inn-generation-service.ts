@@ -1,21 +1,11 @@
 import * as fs from "fs";
 import { Inn } from "src/generators/inn-generator/model/Inn";
 import { InnGeneratorSettings } from "../model/InnGeneratorSettings";
-import { GeneratorService } from "src/generators/generator/service/generation-service";
+import { BaseGeneratorService } from "src/generators/base-generator/service/base-generation-service";
 
 
-export class InnGeneratorService extends GeneratorService {
+export class InnGeneratorService extends BaseGeneratorService {
   GENERATE_NOTE_HIDDEN = false;
-
-  private generateInn(prefixes: string[], innType: string[], nouns: string[], descriptions: string[], rumors: string[]): Inn {
-    const prefixIndex = Math.floor(Math.random() * prefixes.length);
-    const innTypeIndex = Math.floor(Math.random() * innType.length);
-    const nounIndex = Math.floor(Math.random() * nouns.length);
-    const descriptionIndex = Math.floor(Math.random() * descriptions.length);
-    const rumorsIndexes = this.generateUniqueNumbers(0, rumors.length);
-  
-    return new Inn(prefixes[prefixIndex] + " " + nouns[nounIndex] + " " + innType[innTypeIndex], descriptions[descriptionIndex], [rumors[rumorsIndexes[0]], rumors[rumorsIndexes[1]], rumors[rumorsIndexes[2]]]);
-  }
   
   private generateUniqueNumbers(min: number, max:number) {
     const numbers: number[] = [];
@@ -28,9 +18,7 @@ export class InnGeneratorService extends GeneratorService {
     return numbers;
   }
 
-  onGenerateButtonClicked(resultsDiv: HTMLElement, innGenerationSettings: InnGeneratorSettings): Inn {
-    const currInn = this.generateInn(innGenerationSettings.prefixes, innGenerationSettings.innType, innGenerationSettings.nouns, innGenerationSettings.desc, innGenerationSettings.rumors);
-
+  createView(resultsDiv: HTMLElement, currInn: Inn) {
     resultsDiv.empty();
     resultsDiv.createEl("h3", { text: currInn.name });
 
@@ -51,8 +39,16 @@ export class InnGeneratorService extends GeneratorService {
             rumorBody.createEl("div", { text: rumor });
         }
     }
+  }
 
-    return currInn;
+  generateItem(innGenerationSettings: InnGeneratorSettings): Inn {
+    const prefixIndex = Math.floor(Math.random() * innGenerationSettings.prefixes.length);
+    const innTypeIndex = Math.floor(Math.random() * innGenerationSettings.innType.length);
+    const nounIndex = Math.floor(Math.random() * innGenerationSettings.nouns.length);
+    const descriptionIndex = Math.floor(Math.random() * innGenerationSettings.desc.length);
+    const rumorsIndexes = this.generateUniqueNumbers(0, innGenerationSettings.rumors.length);
+  
+    return new Inn(innGenerationSettings.prefixes[prefixIndex] + " " + innGenerationSettings.nouns[nounIndex] + " " + innGenerationSettings.innType[innTypeIndex], innGenerationSettings.desc[descriptionIndex], [innGenerationSettings.rumors[rumorsIndexes[0]], innGenerationSettings.rumors[rumorsIndexes[1]], innGenerationSettings.rumors[rumorsIndexes[2]]]);
   }
 
 

@@ -1,24 +1,24 @@
 import { ButtonComponent } from "obsidian";
-import { GeneratorService } from "../service/generation-service";
+import { BaseGeneratorService } from "../service/base-generation-service";
 
-export class GeneratorComponent {
+export class BaseGeneratorComponent {
 
     parentDiv: HTMLElement;
 
     generateClickSettings?: any;
-    generatorService: GeneratorService;
+    generatorService: BaseGeneratorService;
 
     currentItem: any;
 
-    constructor(parentDiv: HTMLElement, generatorService: GeneratorService, generateClickSettings?: any) {
+    constructor(parentDiv: HTMLElement, generatorService: BaseGeneratorService, generateClickSettings?: any) {
         this.parentDiv = parentDiv;
         this.generateClickSettings = generateClickSettings;
         this.generatorService = generatorService;
 
-        this.createView();
+        this.createActionsSection();
     }
 
-    createView() {
+    createActionsSection() {
         this.parentDiv.empty();
         const resultsDiv = this.parentDiv.createDiv();
         const actionsDiv = this.parentDiv.createDiv();
@@ -41,7 +41,7 @@ export class GeneratorComponent {
         const resetButtonDiv = overallActionButtonsDiv.createDiv();
         const resetButton = new ButtonComponent(resetButtonDiv);
         resetButton.setButtonText("Reset").setCta().onClick(() => {
-            this.createView();
+            this.createActionsSection();
         });
         resetButtonDiv.hidden = true;
 
@@ -64,7 +64,8 @@ export class GeneratorComponent {
         generateButton.setButtonText("Generate").setCta().onClick(() => {
             resetButtonDiv.hidden = false;
             createPageButtonDiv.hidden = false;
-            this.currentItem = this.generatorService.onGenerateButtonClicked(resultsDiv, this.generateClickSettings);
+            this.currentItem = this.generatorService.generateItem(this.generateClickSettings);
+            this.generatorService.createView(resultsDiv, this.currentItem);
         });
     }
 }

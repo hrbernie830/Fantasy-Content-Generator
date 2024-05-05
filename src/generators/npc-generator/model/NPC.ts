@@ -1,10 +1,16 @@
-export class NPC {
+import { BaseGeneratedItem } from "src/generators/base-generator/model/base-generated-item";
+
+export class NPC extends BaseGeneratedItem {
     public gender?: string;
     public race?: string;
     public firstName?: string;
     public familyName?: string;
     public funFact?: string;
     static RACE_OPTIONS: string[] = ["Human", "Elf", "Dwarf", "Halfling", "Goblin", "Random"];
+
+    constructor() {
+        super("blank");
+    }
 
     public getGenderOrDefault(defaultString: string) {
         return this.getOrDefault(this.gender, defaultString);

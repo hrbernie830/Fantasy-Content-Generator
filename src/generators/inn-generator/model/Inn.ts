@@ -1,14 +1,12 @@
-export class Inn {
-    public name?: string;
+import { BaseGeneratedItem } from "src/generators/base-generator/model/base-generated-item";
+
+export class Inn extends BaseGeneratedItem {
     public description?: string;
     public rumors?: string[];
 
     constructor(name: string, description: string, rumors: string[]) {
-        this.name = name;
-        if(description) {
-            this.description = description.charAt(0).toUpperCase() + description.slice(1);
-        }
-        
+        super(name);
+        this.description = description.charAt(0).toUpperCase() + description.slice(1);
         this.rumors = rumors;
     }
 }
