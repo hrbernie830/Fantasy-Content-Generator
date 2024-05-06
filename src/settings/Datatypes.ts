@@ -4,6 +4,7 @@ import { Notice } from 'obsidian';
 import { DrinkGeneratorSettings } from 'src/generators/drink-generator/model/DrinkGeneratorSettings';
 import { InnGeneratorSettings } from "src/generators/inn-generator/model/InnGeneratorSettings";
 import { LootGeneratorSettings } from 'src/generators/loot-generator/model/LootGeneratorSettings';
+import { NPCGeneratorSettings } from 'src/generators/npc-generator/model/NPCGeneratorSettings';
 
 // currency Datatype for defining custom currency
 export type currency = {
@@ -23,8 +24,10 @@ export interface FantasyPluginSettings {
     innSettings: InnGeneratorSettings;
     drinkSettings: DrinkGeneratorSettings;
     lootSettings: LootGeneratorSettings;
+    npcSettings: NPCGeneratorSettings;
     nameFileLocation: string;
     funFactFileLocation: string;
+    usedNpcSettings: NPCGeneratorSettings;
 }
 
 export function importJSON(path: string, callback: (data: object) => void): void {

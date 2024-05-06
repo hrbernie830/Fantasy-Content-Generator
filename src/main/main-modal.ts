@@ -49,7 +49,7 @@ export class GeneratorModal extends Modal {
         this.optionsDiv = contentEl.createDiv();
         // default
         
-        const npcGeneratorComponent = new NPCGeneratorComponent(this.contentDiv, this.plugin.settings.nameFileLocation, this.plugin.settings.funFactFileLocation);
+        const npcGeneratorComponent = new NPCGeneratorComponent(this.contentDiv, this.plugin.settings.nameFileLocation, this.plugin.settings.funFactFileLocation, this.plugin);
         
         select.onChange((typeSelected) => {
             this.contentDiv.innerHTML = "";

@@ -2,6 +2,7 @@ import { InnGeneratorSettings } from "src/generators/inn-generator/model/InnGene
 import { FantasyPluginSettings } from "./Datatypes";
 import { DrinkGeneratorSettings } from "src/generators/drink-generator/model/DrinkGeneratorSettings";
 import { LootGeneratorSettings } from "src/generators/loot-generator/model/LootGeneratorSettings";
+import { NPCGeneratorSettings } from "src/generators/npc-generator/model/NPCGeneratorSettings";
 
 //The Default Settings for the Plugin.
 export const DEFAULT_SETTINGS: FantasyPluginSettings = {
@@ -27,5 +28,7 @@ export const DEFAULT_SETTINGS: FantasyPluginSettings = {
     drinkSettings: new DrinkGeneratorSettings(true),
     lootSettings: new LootGeneratorSettings(true),
     nameFileLocation: "",
-    funFactFileLocation: ""
+    funFactFileLocation: "",
+    npcSettings: new NPCGeneratorSettings(true),
+    usedNpcSettings: new NPCGeneratorSettings(false) // TODO - switch to True
 }

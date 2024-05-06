@@ -1,6 +1,7 @@
 import { Setting, ButtonComponent  } from "obsidian";
 import * as npcGenerationService from "src/generators/npc-generator/service/npc-generation-service";
 import { NPC } from "src/generators/npc-generator/model/NPC";
+import FantasyPlugin from "main";
 
 export class NPCGeneratorComponent {
 
@@ -22,10 +23,13 @@ export class NPCGeneratorComponent {
     nameFileLocation: string;
     funFactFileLocation: string;
 
-    constructor(parentDiv: HTMLElement, nameFileLocation: string, funFactFileLocation: string) {
+    plugin: FantasyPlugin;
+
+    constructor(parentDiv: HTMLElement, nameFileLocation: string, funFactFileLocation: string, plugin: FantasyPlugin) {
         this.parentDiv = parentDiv;
         this.nameFileLocation = nameFileLocation;
         this.funFactFileLocation = funFactFileLocation;
+        this.plugin = plugin;
 
         this.createView();
     }
@@ -113,14 +117,14 @@ export class NPCGeneratorComponent {
     }
 
     private onFirstNameLockButtonClicked() {
-        npcGenerationService.markNameAsUsed(this.currentNPC.firstName, this.nameFileLocation);
+        npcGenerationService.markNameAsUsed(this.currentNPC.firstName, this.plugin, this.lockedNPC.getRaceOrDefault('Human'));
         this.lockedNPC.firstName = this.currentNPC.firstName;
         this.firstNameLockButton.setDisabled(true);
         this.firstNameLockButton.removeCta();
     }
 
     private onFamilyNameLockButtonClicked() {
-        npcGenerationService.markNameAsUsed(this.currentNPC.familyName, this.nameFileLocation);
+        npcGenerationService.markNameAsUsed(this.currentNPC.familyName, this.plugin, this.lockedNPC.getRaceOrDefault('Human'), true);
         this.lockedNPC.familyName = this.currentNPC.familyName;
         this.familyNameLockButton.setDisabled(true);
         this.familyNameLockButton.removeCta();
@@ -173,7 +177,7 @@ export class NPCGeneratorComponent {
     }
 
     private onGenerateButtonClicked() {
-        this.currentNPC = npcGenerationService.generate(this.lockedNPC, this.nameFileLocation, this.funFactFileLocation);
+        this.currentNPC = npcGenerationService.generate(this.lockedNPC, this.nameFileLocation, this.funFactFileLocation, this.plugin.settings.npcSettings, this.plugin.settings.usedNpcSettings);
 
         this.genSettings.gender = this.currentNPC.getGenderOrDefault('');
         this.genSettings.race = this.currentNPC.getRaceOrDefault('');

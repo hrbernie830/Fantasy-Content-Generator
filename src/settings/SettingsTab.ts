@@ -5,6 +5,7 @@ import { DEFAULT_SETTINGS } from "./DefaultSetting";
 import { InnGeneratorSettings } from "src/generators/inn-generator/model/InnGeneratorSettings";
 import { DrinkGeneratorSettings } from "src/generators/drink-generator/model/DrinkGeneratorSettings";
 import { LootGeneratorSettings } from "src/generators/loot-generator/model/LootGeneratorSettings";
+import { NPCRaceSettings } from "src/generators/npc-generator/model/NPCRaceSettings";
 
 export class SettingTab extends PluginSettingTab {
     plugin: FantasyPlugin;
@@ -25,24 +26,30 @@ export class SettingTab extends PluginSettingTab {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     createSettingsBlock(containerEl: HTMLElement, textA: string, arr: any[], type: string, weights: boolean): void {
         new Setting(containerEl).setName(type + " being used").setDesc("Click 'remove' for any item you want removed from the Array");
+        this.createTableBlock(containerEl, arr, weights, textA);
+        
+    }
+
+    createTableBlock(containerEl: HTMLElement, arr: any[], weights: boolean, textA?: string) {
+        let preText = textA ? textA : '';
         new Setting(containerEl)
-            .setName("New Addition:")
-            .addTextArea((text) => {
-                text.onChange((value) => {
-                    textA = value;
+        .setName("New Addition:")
+        .addTextArea((text) => {
+            text.onChange((value) => {
+                preText = value;
+            })
+        })
+        .addButton((btn) => {
+            btn.setCta().setButtonText("Add")
+                .onClick(async () => {
+                    this.convertStringToArray(preText, arr);
+                    this.display();
+                    await this.plugin.saveSettings();
                 })
-            })
-            .addButton((btn) => {
-                btn.setCta().setButtonText("Add")
-                    .onClick(async () => {
-                        this.convertStringToArray(textA, arr);
-                        this.display();
-                        await this.plugin.saveSettings();
-                    })
-            })
+        })
 
         const foldDiv = containerEl.createEl('details', { cls: "OFCGDetails" });
-        foldDiv.createEl("summary", { text: type, cls: "OFCGSummary" });
+        foldDiv.createEl("summary", { text: '', cls: "OFCGSummary" });
 
         for (let index = 0; index < arr.length; index++) {
             new Setting(foldDiv)
@@ -226,6 +233,8 @@ export class SettingTab extends PluginSettingTab {
         // END CURRENCY SETTINGS //
         currencyEl.createEl('hr');
 
+        this.generateNpcSettingsBlock(containerEl);
+
         // INN'S / TAVERN SETTINGS //
         const innDiv = containerEl.createDiv("innDiv");
         new Setting(innDiv).setHeading().setName("Inn Settings");
@@ -388,6 +397,90 @@ export class SettingTab extends PluginSettingTab {
                     })
             });
         }
+    }
+
+
+    generateNpcSettingsBlock(containerEl: HTMLElement) {
+        // INN'S / TAVERN SETTINGS //
+        const npcDiv = containerEl.createDiv();
+        npcDiv.createEl("h5", { text: "NPC Settings" });
+
+        this.generateNPCRaceSettingsBlock(npcDiv, this.plugin.settings.npcSettings.human);
+        this.generateNPCRaceSettingsBlock(npcDiv, this.plugin.settings.npcSettings.elf);
+        this.generateNPCRaceSettingsBlock(npcDiv, this.plugin.settings.npcSettings.dwarf);
+        this.generateNPCRaceSettingsBlock(npcDiv, this.plugin.settings.npcSettings.halfling);
+        this.generateNPCRaceSettingsBlock(npcDiv, this.plugin.settings.npcSettings.goblin);
+
+    
+        // if (Platform.isDesktopApp) {
+        //     const importExportFile = new Setting(npcDiv)
+        //         .setName("Import | Export")
+        //         .setDesc("Import A Json File With Supported information");
+    
+        //     const inputAppfile = createEl("input", {
+        //         attr: {
+        //             type: "file",
+        //             name: "inn",
+        //             accept: ".json",
+        //             multiple: false
+        //         }
+        //     });
+    
+        //     inputAppfile.onchange = async () => {
+        //         const { files } = inputAppfile;
+        //         if (files === null || !files.length) return;
+        //         try {
+        //             const file = files[0] as FileWithPath;
+        //             importJSON(file.path, async (data) => {
+        //                 this.plugin.settings.innSettings = data as InnGeneratorSettings;
+        //                 this.display();
+        //                 await this.plugin.saveSettings();
+        //             });
+    
+        //         } catch (e) { /* empty */ }
+        //     }
+    
+        //     importExportFile.addButton((b) => {
+        //         b.setButtonText("Choose Import File").setTooltip(
+        //             "Import Json File for the Generator"
+        //         ).buttonEl.appendChild(inputAppfile)
+        //         b.buttonEl.addClass("FCGInput");
+        //         b.onClick(() => inputAppfile.click());
+        //     }).addButton((b) => {
+        //         b.setButtonText("Export Section To File").setCta()
+        //             .onClick(() => {
+        //                 exportJSON(this.plugin.settings.innSettings);
+        //             })
+        //     });
+        // }
+    
+        
+    
+        // END INN'S / TAVERN SETTINGS //
+    }
+
+    generateNPCRaceSettingsBlock(containerDiv: HTMLElement, settingBlock: NPCRaceSettings) {
+        const raceDiv = containerDiv.createDiv({
+            attr: {
+                style: "padding-left: 10px;"
+            }
+        });
+        raceDiv.createEl("h6", { text: settingBlock.raceName + " Race Settings" });
+
+        this.createNameTypeSection(raceDiv, settingBlock.masculineFirst, "Masculine First");
+        this.createNameTypeSection(raceDiv, settingBlock.feminineFirst, "Feminine First");
+        this.createNameTypeSection(raceDiv, settingBlock.neutralFirst, "Neutral First");
+        this.createNameTypeSection(raceDiv, settingBlock.family, "Family/Last");
+    }
+
+    createNameTypeSection(overallRaceDiv: HTMLElement, nameList: string[], nameType: string) {
+        const nameTypeDiv = overallRaceDiv.createDiv({
+            attr: {
+                style: "padding-left: 10px;"
+            }
+        })
+        nameTypeDiv.createEl("b", { text: nameType + " Names" });
+        this.createTableBlock(nameTypeDiv, nameList, false);
     }
 
 }

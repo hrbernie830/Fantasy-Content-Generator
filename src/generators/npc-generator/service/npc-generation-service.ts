@@ -1,5 +1,8 @@
 import { NPC } from "src/generators/npc-generator/model/NPC";
 import * as fs from "fs";
+import { NPCGeneratorSettings } from "../model/NPCGeneratorSettings";
+import { NPCRaceSettings } from "../model/NPCRaceSettings";
+import FantasyPlugin from "main";
 
 export const genderKeyList = ["Male", "Female"];
 export const genderValueList = ["Masculine First", "Feminine First", "Neutral First", "Family"];
@@ -7,7 +10,7 @@ export const genderValueList = ["Masculine First", "Feminine First", "Neutral Fi
 export const npcNameFilePath = "C:/Users/bernh/Downloads/NPCNames.txt";
 export const funFactFilePath1 = "C:/Users/bernh/Downloads/NPCFunFactList.txt";
 
-export function generate(lockedNPC: NPC, nameFilePath: string, funFactFilePath: string): NPC {
+export function generate(lockedNPC: NPC, nameFilePath: string, funFactFilePath: string, npcGeneratorSettings: NPCGeneratorSettings, usedNpcGeneratorSettings: NPCGeneratorSettings): NPC {
     let npcFirstName = '';
     let npcLastName = '';
     let npcFunFact = '';
@@ -15,7 +18,7 @@ export function generate(lockedNPC: NPC, nameFilePath: string, funFactFilePath: 
     const openMap = new Map<string, Map<string, string[]>>;
     const deletedMap = new Map<string, Map<string, string[]>>;
 
-    fillMaps(openMap, deletedMap, nameFilePath);
+    fillMaps(openMap, deletedMap, npcGeneratorSettings, usedNpcGeneratorSettings);
     const funFactList = getFunFactOptions(funFactFilePath);
 
     let raceKey = lockedNPC.getRaceOrDefault("RANDOM").toUpperCase()
@@ -38,7 +41,7 @@ export function generate(lockedNPC: NPC, nameFilePath: string, funFactFilePath: 
 
     let list = openMap.get(raceKey)?.get(genderKey);
     if(!list) {
-        list = []; //Array.from(openMap.keys()); //[];
+        list = [];
     }
     let neutralList = openMap.get(raceKey)?.get(genderValueList[2]);
     if(!neutralList) {
@@ -49,22 +52,16 @@ export function generate(lockedNPC: NPC, nameFilePath: string, funFactFilePath: 
         const firstNameIndex = Math.floor(Math.random() * list.length + neutralList.length);
 
         if(firstNameIndex < list.length) {
-            npcFirstName = list.splice(firstNameIndex, 1)[0];
-            openMap.get(raceKey)?.set(genderKey, list);
-            deletedMap.get(raceKey)?.get(genderKey)?.push(npcFirstName);
+            npcFirstName = list.at(firstNameIndex)!;
         } else {
-            npcFirstName = neutralList.splice(firstNameIndex - list.length, 1)[0];
-            openMap.get(raceKey)?.set(genderValueList[2], neutralList);
-            deletedMap.get(raceKey)?.get(genderValueList[2])?.push(npcFirstName);
+            npcFirstName = neutralList.at(firstNameIndex - list.length)!;
         }
     }
 
     const familyNameList = openMap.get(raceKey)?.get(genderValueList[3]);
     if(familyNameList && familyNameList.length > 0) {
         const lastNameIndex = Math.floor(Math.random() * familyNameList.length);
-        npcLastName = familyNameList.splice(lastNameIndex, 1)[0];
-        openMap.get(raceKey)?.set(genderValueList[3], familyNameList);
-        deletedMap.get(raceKey)?.get(genderValueList[3])?.push(npcLastName);
+        npcLastName = familyNameList.at(lastNameIndex)!;
     }
 
     let npcFunFactList: string[] = [];
@@ -119,17 +116,93 @@ export function markFunFactAsUsed(funFact: string | undefined, funFactFilePath: 
     }
 }
 
-export function markNameAsUsed(name: string | undefined, nameFilePath: string) {
+export function markNameAsUsedOld(name: string | undefined, nameFilePath: string) {
     if(name !== undefined) {
         const openMap = new Map<string, Map<string, string[]>>;
         const deletedMap = new Map<string, Map<string, string[]>>;
     
-        fillMaps(openMap, deletedMap, nameFilePath, name);
+        fillMapsFileVersion(openMap, deletedMap, nameFilePath, name);
         reprintFile(openMap, deletedMap, nameFilePath);
     }
 }
 
-export function fillMaps(openMap: Map<string, Map<string, string[]>>, deletedMap: Map<string, Map<string, string[]>>, nameFilePath: string, nameToAddToDeleted?: string) {
+export async function markNameAsUsed(name: string | undefined, plugin: FantasyPlugin, race: string, isFamilyName?: boolean) {
+    if(name !== undefined) {
+        const raceSettingsToRemoveFrom = getRaceBasedGeneratorSettings(plugin.settings.npcSettings, race);
+        const raceSettingsAddTo = getRaceBasedGeneratorSettings(plugin.settings.usedNpcSettings, race);
+
+        if(isFamilyName) {
+            const index = raceSettingsToRemoveFrom.family.indexOf(name);
+            if(index > 0) {
+                const removedFrom = raceSettingsToRemoveFrom.family.splice(index, 1);
+                raceSettingsAddTo.family.push(removedFrom[0]);
+            }        
+        }
+
+        await plugin.saveSettings();
+    }
+}
+
+export function getRaceBasedGeneratorSettings(npcGeneratorSettings: NPCGeneratorSettings, race: string): NPCRaceSettings{
+    switch (race.toLowerCase()) {
+        case "human":
+            return npcGeneratorSettings.human;
+        case "elf":
+            return npcGeneratorSettings.elf;
+        case "dwarf":
+            return npcGeneratorSettings.dwarf;
+        case "halfling":
+            return npcGeneratorSettings.halfling;
+        case "goblin":
+            return npcGeneratorSettings.goblin;
+        default:
+            return new NPCRaceSettings('missing');
+   } 
+}
+
+export function getListExcludingItem(names: string[], excludingName?: string) {
+    const retVal = [];
+
+    for(const name of names) {
+        if(!excludingName || excludingName !== name.trim()) {
+            retVal.push(name);
+        }
+    }
+
+    return retVal;
+}
+
+export function createRaceMapFromSettings(openMap: Map<string, Map<string, string[]>>, npcRaceSettings: NPCRaceSettings, excludingName?: string) {
+    const masculineNames: string[] = getListExcludingItem(npcRaceSettings.masculineFirst, excludingName);
+    const feminineNames: string[] = getListExcludingItem(npcRaceSettings.feminineFirst, excludingName);
+    const neutralNames: string[] = getListExcludingItem(npcRaceSettings.neutralFirst, excludingName);
+    const familyNames: string[] = getListExcludingItem(npcRaceSettings.family, excludingName);
+
+    const raceMap = new Map<string, string[]>;
+    raceMap.set("Masculine First", masculineNames);
+    raceMap.set("Feminine First", feminineNames);
+    raceMap.set("Neutral First", neutralNames);
+    raceMap.set("Family", familyNames);
+
+    openMap.set(npcRaceSettings.raceName.toUpperCase(), raceMap);
+}
+
+export function fillMaps(openMap: Map<string, Map<string, string[]>>, deletedMap: Map<string, Map<string, string[]>>, npcGeneratorSettings: NPCGeneratorSettings, usedNpcGeneratorSettings: NPCGeneratorSettings, excludingName?: string) {
+    createRaceMapFromSettings(openMap, npcGeneratorSettings.human, excludingName);
+    createRaceMapFromSettings(openMap, npcGeneratorSettings.elf, excludingName);
+    createRaceMapFromSettings(openMap, npcGeneratorSettings.dwarf, excludingName);
+    createRaceMapFromSettings(openMap, npcGeneratorSettings.halfling, excludingName);
+    createRaceMapFromSettings(openMap, npcGeneratorSettings.goblin, excludingName);
+
+
+    createRaceMapFromSettings(deletedMap, usedNpcGeneratorSettings.human, excludingName);
+    createRaceMapFromSettings(deletedMap, usedNpcGeneratorSettings.elf, excludingName);
+    createRaceMapFromSettings(deletedMap, usedNpcGeneratorSettings.dwarf, excludingName);
+    createRaceMapFromSettings(deletedMap, usedNpcGeneratorSettings.halfling, excludingName);
+    createRaceMapFromSettings(deletedMap, usedNpcGeneratorSettings.goblin, excludingName);
+}
+
+export function fillMapsFileVersion(openMap: Map<string, Map<string, string[]>>, deletedMap: Map<string, Map<string, string[]>>, nameFilePath: string, nameToAddToDeleted?: string) {
     let currOuter: string;
     let currInner: string;
 
