@@ -1,0 +1,19 @@
+import { BaseGeneratedItem } from "../model/base-generated-item";
+
+export class BaseGeneratorService {
+  GENERATE_NOTE_HIDDEN = true;
+
+  generateItem(settings?: any): any {
+    return new BaseGeneratedItem("implementation missing");
+  }
+
+  createView(resultsDiv: HTMLElement, item: BaseGeneratedItem) {
+    resultsDiv.empty();
+    resultsDiv.createEl("h6", { text: item.getName() });
+  }
+
+
+  generateNote(item: any) {
+    // Do Nothing
+  }
+}
