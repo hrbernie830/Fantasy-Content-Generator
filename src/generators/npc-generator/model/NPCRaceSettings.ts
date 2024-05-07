@@ -5,9 +5,14 @@ export class NPCRaceSettings {
     neutralFirst: string[];
     family: string[];
 
-    constructor(raceName: string, defaultSettings?: boolean) {
+    constructor(notEmpty: boolean, raceName: string, defaultSettings?: boolean) {
         this.raceName = raceName;
-        if(defaultSettings) {
+        if(!notEmpty) {
+            this.masculineFirst = [];
+            this.feminineFirst = [];
+            this.neutralFirst = [];
+            this.family = [];
+        } else if(defaultSettings) {
             this.masculineFirst = this.DEFAULT_MASCULINE_FIRST;
             this.feminineFirst = this.DEFAULT_FEMININE_FIRST;
             this.neutralFirst = this.DEFAULT_NEUTRAL_FIRST;

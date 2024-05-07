@@ -131,7 +131,7 @@ export class NPCGeneratorComponent {
     }
 
     private onFunFactLockButtonClicked() {
-        npcGenerationService.markFunFactAsUsed(this.currentNPC.funFact, this.funFactFileLocation);
+        npcGenerationService.markFunFactAsUsed(this.currentNPC.funFact, this.plugin);
         this.lockedNPC.funFact = this.currentNPC.funFact;
         this.funFactLockButton.setDisabled(true);
         this.funFactLockButton.removeCta();

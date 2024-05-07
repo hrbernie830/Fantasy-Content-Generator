@@ -19,7 +19,7 @@ export function generate(lockedNPC: NPC, nameFilePath: string, funFactFilePath: 
     const deletedMap = new Map<string, Map<string, string[]>>;
 
     fillMaps(openMap, deletedMap, npcGeneratorSettings, usedNpcGeneratorSettings);
-    const funFactList = getFunFactOptions(funFactFilePath);
+    const funFactList = getFunFactOptions( npcGeneratorSettings, usedNpcGeneratorSettings);
 
     let raceKey = lockedNPC.getRaceOrDefault("RANDOM").toUpperCase()
     if(raceKey.toUpperCase() === "RANDOM") {
@@ -83,11 +83,11 @@ export function generate(lockedNPC: NPC, nameFilePath: string, funFactFilePath: 
     return retVal;
 }
 
-export function getFunFactOptions(funFactFilePath: string): Map<string, string[]> {
+export function getFunFactOptionsOld(funFactFilePath: string): Map<string, string[]> {
     const funFactMap = new Map<string, string[]>;
     funFactMap.set("open", []);
     funFactMap.set("deleted", []);
-    const allFileContents = fs.readFileSync(funFactFilePath, 'utf-8');
+    const allFileContents = fs.readFileSync(funFactFilePath ? funFactFilePath : 'C:\\Users\\bernh\\iCloudDrive\\iCloud~md~obsidian\\Campaign Notes\\z_Data\\npc_fun_fact_list.md', 'utf-8');
     allFileContents.split(/\r?\n/).forEach(line =>  {
         if(line.startsWith("+")) {
             funFactMap.get("deleted")?.push(line.substring(1));
@@ -99,30 +99,26 @@ export function getFunFactOptions(funFactFilePath: string): Map<string, string[]
     return funFactMap;
 }
 
-export function markFunFactAsUsed(funFact: string | undefined, funFactFilePath: string) {
-    if(funFact !== undefined) {
-        let newFileText = "";
-        const funFactMap = getFunFactOptions(funFactFilePath);
-        if(funFactMap.get("open")?.contains(funFact)) {
-            funFactMap.get("open")?.remove(funFact);
-            funFactMap.get("deleted")?.push(funFact);
-        }
+export function getFunFactOptions(npcGeneratorSettings: NPCGeneratorSettings, usedNpcGeneratorSettings: NPCGeneratorSettings, excludingItem?: string): Map<string, string[]> {
+    const funFactMap = new Map<string, string[]>;
+    const funFactList: string[] = getListExcludingItem(npcGeneratorSettings.funFactList, excludingItem);
+    const usedFunFactList: string[] = getListExcludingItem(usedNpcGeneratorSettings.funFactList, excludingItem);
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        newFileText += createPrintStringForList(funFactMap.get("open")!, "");
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        newFileText += createPrintStringForList(funFactMap.get("deleted")!, "+");
-        writeFile(funFactFilePath, newFileText);
-    }
+
+    funFactMap.set("open", funFactList);
+    funFactMap.set("deleted", usedFunFactList);
+
+    return funFactMap;
 }
 
-export function markNameAsUsedOld(name: string | undefined, nameFilePath: string) {
-    if(name !== undefined) {
-        const openMap = new Map<string, Map<string, string[]>>;
-        const deletedMap = new Map<string, Map<string, string[]>>;
-    
-        fillMapsFileVersion(openMap, deletedMap, nameFilePath, name);
-        reprintFile(openMap, deletedMap, nameFilePath);
+export async function markFunFactAsUsed(funFact: string | undefined, plugin: FantasyPlugin) {
+    if(funFact !== undefined) {
+        const index = plugin.settings.npcSettings.funFactList.indexOf(funFact);
+        if(index > -1) {
+            const removedFrom = plugin.settings.npcSettings.funFactList.splice(index, 1);
+            plugin.settings.usedNpcSettings.funFactList.push(removedFrom[0]);
+        }
+
     }
 }
 
@@ -133,15 +129,34 @@ export async function markNameAsUsed(name: string | undefined, plugin: FantasyPl
 
         if(isFamilyName) {
             const index = raceSettingsToRemoveFrom.family.indexOf(name);
-            if(index > 0) {
+            if(index > -1) {
                 const removedFrom = raceSettingsToRemoveFrom.family.splice(index, 1);
                 raceSettingsAddTo.family.push(removedFrom[0]);
-            }        
+            }
+        } else {
+            let index = raceSettingsToRemoveFrom.masculineFirst.indexOf(name);
+            if(index > -1) {
+                const removedFrom = raceSettingsToRemoveFrom.masculineFirst.splice(index, 1);
+                raceSettingsAddTo.masculineFirst.push(removedFrom[0]);
+            }
+
+            index = raceSettingsToRemoveFrom.feminineFirst.indexOf(name);
+            if(index > -1) {
+                const removedFrom = raceSettingsToRemoveFrom.feminineFirst.splice(index, 1);
+                raceSettingsAddTo.feminineFirst.push(removedFrom[0]);
+            }
+
+            index = raceSettingsToRemoveFrom.neutralFirst.indexOf(name);
+            if(index > -1) {
+                const removedFrom = raceSettingsToRemoveFrom.neutralFirst.splice(index, 1);
+                raceSettingsAddTo.neutralFirst.push(removedFrom[0]);
+            }
         }
 
         await plugin.saveSettings();
     }
 }
+
 
 export function getRaceBasedGeneratorSettings(npcGeneratorSettings: NPCGeneratorSettings, race: string): NPCRaceSettings{
     switch (race.toLowerCase()) {
@@ -156,7 +171,7 @@ export function getRaceBasedGeneratorSettings(npcGeneratorSettings: NPCGenerator
         case "goblin":
             return npcGeneratorSettings.goblin;
         default:
-            return new NPCRaceSettings('missing');
+            return new NPCRaceSettings(true, 'missing');
    } 
 }
 
@@ -200,51 +215,6 @@ export function fillMaps(openMap: Map<string, Map<string, string[]>>, deletedMap
     createRaceMapFromSettings(deletedMap, usedNpcGeneratorSettings.dwarf, excludingName);
     createRaceMapFromSettings(deletedMap, usedNpcGeneratorSettings.halfling, excludingName);
     createRaceMapFromSettings(deletedMap, usedNpcGeneratorSettings.goblin, excludingName);
-}
-
-export function fillMapsFileVersion(openMap: Map<string, Map<string, string[]>>, deletedMap: Map<string, Map<string, string[]>>, nameFilePath: string, nameToAddToDeleted?: string) {
-    let currOuter: string;
-    let currInner: string;
-
-    const allFileContents = fs.readFileSync(nameFilePath, 'utf-8');
-    allFileContents.split(/\r?\n/).forEach(line =>  {
-        if(line.startsWith("**")) {
-            const currLine = line.substring(2, line.length-2);
-
-            if(!genderValueList.contains(currLine)) {
-                currOuter = currLine;
-                openMap.set(currOuter, createKeyMap());
-                deletedMap.set(currOuter, createKeyMap());
-                currInner = "";
-            } else if (currOuter) {
-                currInner = currLine;
-            }
-        } else if(currOuter && currInner && currInner.length > 0) {
-            if(line.startsWith("+")) {
-                const raceMap = deletedMap.get(currOuter);
-                if(raceMap) {
-                    const nameList = raceMap.get(currInner);
-                    if(nameList) {
-                        nameList.push(line.substring(1));
-                    }
-                }
-            } else if (line.trim().length > 0) {
-                let raceMap;
-                if(nameToAddToDeleted && nameToAddToDeleted === line.trim()) {
-                    raceMap = deletedMap.get(currOuter);
-                } else {
-                    raceMap = openMap.get(currOuter);
-                }
-
-                if(raceMap) {
-                    const nameList = raceMap.get(currInner);
-                    if(nameList) {
-                        nameList.push(line.trim());
-                    }
-                }
-            }
-        }
-    });
 }
 
 export function createKeyMap(): Map<string, string[]> {

@@ -23,3 +23,11 @@
 .FCGInput>input[type="file"] {
     display: none;
 }
+
+.OFCGDetails .setting-item-name {
+    color: var(--text-on-accent);
+}
+
+.OFCGDetails .OFCGSummary {
+    color: var(--text-on-accent);
+}

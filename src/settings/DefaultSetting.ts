@@ -29,6 +29,6 @@ export const DEFAULT_SETTINGS: FantasyPluginSettings = {
     lootSettings: new LootGeneratorSettings(true),
     nameFileLocation: "",
     funFactFileLocation: "",
-    npcSettings: new NPCGeneratorSettings(true),
-    usedNpcSettings: new NPCGeneratorSettings(false) // TODO - switch to True
+    npcSettings: new NPCGeneratorSettings(true, true),
+    usedNpcSettings: new NPCGeneratorSettings(false, false) // TODO - switch to True
 }

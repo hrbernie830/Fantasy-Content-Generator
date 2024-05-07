@@ -6,6 +6,7 @@ import { InnGeneratorSettings } from "src/generators/inn-generator/model/InnGene
 import { DrinkGeneratorSettings } from "src/generators/drink-generator/model/DrinkGeneratorSettings";
 import { LootGeneratorSettings } from "src/generators/loot-generator/model/LootGeneratorSettings";
 import { NPCRaceSettings } from "src/generators/npc-generator/model/NPCRaceSettings";
+import { NPCGeneratorSettings } from "src/generators/npc-generator/model/NPCGeneratorSettings";
 
 export class SettingTab extends PluginSettingTab {
     plugin: FantasyPlugin;
@@ -26,11 +27,11 @@ export class SettingTab extends PluginSettingTab {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     createSettingsBlock(containerEl: HTMLElement, textA: string, arr: any[], type: string, weights: boolean): void {
         new Setting(containerEl).setName(type + " being used").setDesc("Click 'remove' for any item you want removed from the Array");
-        this.createTableBlock(containerEl, arr, weights, textA);
+        this.createTableBlock(containerEl, arr, weights, undefined, textA);
         
     }
 
-    createTableBlock(containerEl: HTMLElement, arr: any[], weights: boolean, textA?: string) {
+    createTableBlock(containerEl: HTMLElement, arr: any[], weights: boolean, usedArr?: any[], textA?: string) {
         let preText = textA ? textA : '';
         new Setting(containerEl)
         .setName("New Addition:")
@@ -48,24 +49,112 @@ export class SettingTab extends PluginSettingTab {
                 })
         })
 
-        const foldDiv = containerEl.createEl('details', { cls: "OFCGDetails" });
-        foldDiv.createEl("summary", { text: '', cls: "OFCGSummary" });
+        // const foldDiv = containerEl.createEl('details', { cls: "OFCGDetails" });
+        // const prefix = usedArr ? 'Unused ' : '';
+        // foldDiv.createEl("summary", { text: prefix + 'Options Included in Generator', cls: "OFCGSummary" });
+        // for (let index = 0; index < arr.length; index++) {
+        //     const foldDivSetting = new Setting(foldDiv)
+        //         .setName(weights ? JSON.stringify(arr[index]) : arr[index]);
+        //     if(usedArr) {
+        //         foldDivSetting.addButton((btn) => btn
+        //                 .setCta()
+        //                 .setButtonText("Mark as Used")
+        //                 .onClick(async () => {
+        //                     usedArr.push(arr.splice(index, 1)[0]);
+        //                     //this.display();
+        //                     await this.plugin.saveSettings();
+        //                 })
+        //             )
+        //     }
+                
+        //     foldDivSetting.addButton((btn) => btn
+        //             .setCta()
+        //             .setButtonText("Remove")
+        //             .onClick(async () => {
+        //                 arr.splice(index, 1);
+        //                 this.display();
+        //                 await this.plugin.saveSettings();
+        //             })
+        //         )
+        // }
 
+        const tableDiv = containerEl.createDiv();
+        this.createTableDiv(tableDiv, arr, weights, usedArr);
+
+        
+
+        containerEl.createEl('hr');
+    }
+
+    createTableDiv(containerEl: HTMLElement, arr: any[], weights: boolean, usedArr?: any[]) {
+        containerEl.innerHTML = '';
+        const tableDiv = containerEl.createDiv();
+
+        this.createUnusedArrTable(containerEl, tableDiv, arr, weights, usedArr);
+        this.createUsedArrTable(containerEl, tableDiv, arr, weights, usedArr);
+    }
+
+    createUsedArrTable(parentEl: HTMLElement, containerEl: HTMLElement, arr: any[], weights: boolean, usedArr?: any[]) {
+        if(usedArr) {
+            const usedFoldDiv = containerEl.createEl('details', { cls: "OFCGDetails" });
+            usedFoldDiv.createEl("summary", { text: 'Used Options Not Included in Generator', cls: "OFCGSummary" });
+            usedFoldDiv.setAttribute('open', '');
+            for (let index = 0; index < usedArr.length; index++) {
+                new Setting(usedFoldDiv)
+                    .setName(weights ? JSON.stringify(usedArr[index]) : usedArr[index])
+                    .addButton((btn) => btn
+                        .setCta()
+                        .setButtonText("Mark as Unused")
+                        .onClick(async () => {
+                            arr.push(usedArr.splice(index, 1)[0]);
+                            this.createTableDiv(parentEl, arr, weights, usedArr);
+                            await this.plugin.saveSettings();
+                        })
+                    )
+                    .addButton((btn) => btn
+                        .setCta()
+                        .setButtonText("Remove")
+                        .onClick(async () => {
+                            usedArr.splice(index, 1);
+                            this.createTableDiv(parentEl, arr, weights, usedArr);
+                            await this.plugin.saveSettings();
+                        })
+                    )
+            }
+        }
+    }
+
+    createUnusedArrTable(parentEl: HTMLElement, containerEl: HTMLElement, arr: any[], weights: boolean, usedArr?: any[]) {
+        const foldDiv = containerEl.createEl('details', { cls: "OFCGDetails" });
+        const prefix = usedArr ? 'Unused ' : '';
+        foldDiv.createEl("summary", { text: prefix + 'Options Included in Generator', cls: "OFCGSummary" });
+        foldDiv.setAttribute('open', '');
         for (let index = 0; index < arr.length; index++) {
-            new Setting(foldDiv)
-                .setName(weights ? JSON.stringify(arr[index]) : arr[index])
-                .addButton((btn) => btn
+            const foldDivSetting = new Setting(foldDiv)
+                .setName(weights ? JSON.stringify(arr[index]) : arr[index]);
+            if(usedArr) {
+                foldDivSetting.addButton((btn) => btn
+                        .setCta()
+                        .setButtonText("Mark as Used")
+                        .onClick(async () => {
+                            usedArr.push(arr.splice(index, 1)[0]);
+                            this.createTableDiv(parentEl, arr, weights, usedArr);
+                            await this.plugin.saveSettings();
+                        })
+                    )
+            }
+                
+            foldDivSetting.addButton((btn) => btn
                     .setCta()
                     .setButtonText("Remove")
                     .onClick(async () => {
                         arr.splice(index, 1);
-                        this.display();
+                        containerEl.removeChild(foldDiv);
+                        this.createTableDiv(parentEl, arr, weights, usedArr);
                         await this.plugin.saveSettings();
                     })
                 )
-
         }
-        containerEl.createEl('hr');
     }
 
     display(): void {
@@ -403,13 +492,31 @@ export class SettingTab extends PluginSettingTab {
     generateNpcSettingsBlock(containerEl: HTMLElement) {
         // INN'S / TAVERN SETTINGS //
         const npcDiv = containerEl.createDiv();
-        npcDiv.createEl("h5", { text: "NPC Settings" });
+        const header = npcDiv.createEl("h5", { text: "NPC Settings (tap to expand)" });
 
-        this.generateNPCRaceSettingsBlock(npcDiv, this.plugin.settings.npcSettings.human);
-        this.generateNPCRaceSettingsBlock(npcDiv, this.plugin.settings.npcSettings.elf);
-        this.generateNPCRaceSettingsBlock(npcDiv, this.plugin.settings.npcSettings.dwarf);
-        this.generateNPCRaceSettingsBlock(npcDiv, this.plugin.settings.npcSettings.halfling);
-        this.generateNPCRaceSettingsBlock(npcDiv, this.plugin.settings.npcSettings.goblin);
+        const npcSettingsExpandedDiv = npcDiv.createDiv();
+
+
+        header.onclick = function() {
+            if(header.innerHTML.contains("expand")) {
+                header.innerHTML = 'NPC Settings (tap to collapse)';
+                npcSettingsExpandedDiv.hidden = false;
+            } else {
+                header.innerHTML = 'NPC Settings (tap to expand)';
+                npcSettingsExpandedDiv.hidden = true;
+            }
+            
+        };
+        
+
+        this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.human, this.plugin.settings.usedNpcSettings.human);
+        this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.elf, this.plugin.settings.usedNpcSettings.elf);
+        this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.dwarf, this.plugin.settings.usedNpcSettings.dwarf);
+        this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.halfling, this.plugin.settings.usedNpcSettings.halfling);
+        this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.goblin, this.plugin.settings.usedNpcSettings.goblin);
+        this.generateNPCFunFactSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings, this.plugin.settings.usedNpcSettings);
+
+        npcSettingsExpandedDiv.hidden = true;
 
     
         // if (Platform.isDesktopApp) {
@@ -459,28 +566,81 @@ export class SettingTab extends PluginSettingTab {
         // END INN'S / TAVERN SETTINGS //
     }
 
-    generateNPCRaceSettingsBlock(containerDiv: HTMLElement, settingBlock: NPCRaceSettings) {
+    generateNPCFunFactSettingsBlock(containerDiv: HTMLElement, settingBlock: NPCGeneratorSettings, usedSettingsBlock: NPCGeneratorSettings) {
+        const funFactDiv = containerDiv.createDiv({
+            attr: {
+                style: "padding-left: 10px;"
+            }
+        });
+        const funFactHeader = funFactDiv.createEl("h6", { text: "Fun Fact Settings (tap to expand)" });
+
+        const funFactSettingsExpandedDiv = funFactDiv.createDiv();
+
+        funFactHeader.onclick = function() {
+            if(funFactHeader.innerHTML.contains("expand")) {
+                funFactHeader.innerHTML = "Fun Fact Settings (tap to collapse)";
+                funFactSettingsExpandedDiv.hidden = false;
+            } else {
+                funFactHeader.innerHTML = "Fun Fact Settings (tap to expand)";
+                funFactSettingsExpandedDiv.hidden = true;
+            }
+        };
+
+        this.createSettingsTableSection(funFactSettingsExpandedDiv, settingBlock.funFactList, "Personality/Archetypes", usedSettingsBlock.funFactList);
+        funFactSettingsExpandedDiv.hidden = true;
+    }
+
+    generateNPCRaceSettingsBlock(containerDiv: HTMLElement, settingBlock: NPCRaceSettings, usedSettingsBlock: NPCRaceSettings) {
         const raceDiv = containerDiv.createDiv({
             attr: {
                 style: "padding-left: 10px;"
             }
         });
-        raceDiv.createEl("h6", { text: settingBlock.raceName + " Race Settings" });
+        const raceHeader = raceDiv.createEl("h6", { text: settingBlock.raceName + " Race Settings (tap to expand)" });
 
-        this.createNameTypeSection(raceDiv, settingBlock.masculineFirst, "Masculine First");
-        this.createNameTypeSection(raceDiv, settingBlock.feminineFirst, "Feminine First");
-        this.createNameTypeSection(raceDiv, settingBlock.neutralFirst, "Neutral First");
-        this.createNameTypeSection(raceDiv, settingBlock.family, "Family/Last");
+        const raceSettingsExpandedDiv = raceDiv.createDiv();
+
+        raceHeader.onclick = function() {
+            if(raceHeader.innerHTML.contains("expand")) {
+                raceHeader.innerHTML = settingBlock.raceName + " Race Settings (tap to collapse)";
+                raceSettingsExpandedDiv.hidden = false;
+            } else {
+                raceHeader.innerHTML = settingBlock.raceName + " Race Settings (tap to expand)";
+                raceSettingsExpandedDiv.hidden = true;
+            }
+        };
+
+        this.createSettingsTableSection(raceSettingsExpandedDiv, settingBlock.masculineFirst, "Masculine First Names", usedSettingsBlock.masculineFirst);
+        this.createSettingsTableSection(raceSettingsExpandedDiv, settingBlock.feminineFirst, "Feminine First Names", usedSettingsBlock.feminineFirst);
+        this.createSettingsTableSection(raceSettingsExpandedDiv, settingBlock.neutralFirst, "Neutral First Names", usedSettingsBlock.neutralFirst);
+        this.createSettingsTableSection(raceSettingsExpandedDiv, settingBlock.family, "Family/Last Names", usedSettingsBlock.family);
+        raceSettingsExpandedDiv.hidden = true;
     }
 
-    createNameTypeSection(overallRaceDiv: HTMLElement, nameList: string[], nameType: string) {
-        const nameTypeDiv = overallRaceDiv.createDiv({
+    createSettingsTableSection(overallRaceDiv: HTMLElement, stringList: string[], tableHeader: string, usedList?: any[]) {
+        const tableHeaderDiv = overallRaceDiv.createDiv({
             attr: {
                 style: "padding-left: 10px;"
             }
         })
-        nameTypeDiv.createEl("b", { text: nameType + " Names" });
-        this.createTableBlock(nameTypeDiv, nameList, false);
+        const tableHeaderEl = tableHeaderDiv.createEl("b", { text: tableHeader + " (tap to expand)" });
+
+
+        const tableSectionDiv = tableHeaderDiv.createDiv();
+
+        tableHeaderEl.onclick = function() {
+            if(tableHeaderEl.innerHTML.contains("expand")) {
+                tableHeaderEl.innerHTML = tableHeader + " (tap to collapse)";
+                tableSectionDiv.hidden = false;
+            } else {
+                tableHeaderEl.innerHTML = tableHeader + " (tap to expand)";
+                tableSectionDiv.hidden = true;
+            }
+        };
+
+        
+        this.createTableBlock(tableSectionDiv, stringList, false, usedList);
+        tableSectionDiv.hidden = true;
     }
 
 }

@@ -6,16 +6,24 @@ export class NPCGeneratorSettings {
     dwarf: NPCRaceSettings;
     halfling: NPCRaceSettings;
     goblin: NPCRaceSettings;
+    funFactList: string[];
 
-    constructor(defaultSettings?: boolean) {
-        if(defaultSettings) {
-            this.human = new NPCRaceSettings("Human", true);
-            this.elf = new NPCRaceSettings("Elf", true);
-            this.dwarf = new NPCRaceSettings("Dwarf", true);
-            this.halfling = new NPCRaceSettings("Halfling", true);
-            this.goblin = new NPCRaceSettings("Goblin", true);
+    constructor(notEmpty: boolean, defaultSettings?: boolean) {
+        this.human = new NPCRaceSettings(notEmpty, "Human", defaultSettings);
+        this.elf = new NPCRaceSettings(notEmpty, "Elf", defaultSettings);
+        this.dwarf = new NPCRaceSettings(notEmpty, "Dwarf", defaultSettings);
+        this.halfling = new NPCRaceSettings(notEmpty, "Halfling", defaultSettings);
+        this.goblin = new NPCRaceSettings(notEmpty, "Goblin", defaultSettings);
+
+        if(!notEmpty) {
+            this.funFactList = [];
+        } else if(defaultSettings) {
+            this.funFactList = this.DEFAULT_FUN_FACT_LIST;
         }
     }
+
+
+    private DEFAULT_FUN_FACT_LIST = ["Has a cute dog companion."];
 
 
 }
