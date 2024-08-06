@@ -1,0 +1,78 @@
+{
+    "Used":{
+        "human":{
+            "raceName":"Human",
+            "masculineFirst":["Arnold","Kaspar","Zane","Brayton","Gordon","Walton","Jonathan","Damian","Ed","Thom"],
+            "feminineFirst":["Corinna","Sandy","Katrina","Carina","Alice/Alise","Josslyn","Eleanor"],
+            "neutralFirst":["Gale"],
+            "family":["Stormbreaker","Writingham","Harrick","Gordon","Hardwin","Barnes","Robin","Benson","Goldback","Clearwater","Von Sydow","Locket","Strongbark","Leste"]
+        },
+        "elf":{
+            "raceName":"Elf",
+            "masculineFirst":["Maol", "Tahan", "Quill"],
+            "feminineFirst":["Delemere", "Fira"],
+            "neutralFirst":[],
+            "family":["Moonshadow", "Rince"]
+        },
+        "dwarf":{
+            "raceName":"Dwarf",
+            "masculineFirst":[],
+            "feminineFirst":[],
+            "neutralFirst":[],
+            "family":[]
+        },
+        "halfling":{
+            "raceName":"Halfling",
+            "masculineFirst":["Gideon", "Meril"],
+            "feminineFirst":[],
+            "neutralFirst":[],
+            "family":[]
+        },
+        "goblin":{
+            "raceName":"Goblin",
+            "masculineFirst":["Brevek"],
+            "feminineFirst":[],
+            "neutralFirst":[],
+            "family":[]
+        },
+        "funFactList":["Archetype - Mando (SW)", "Archetype - Astarion (BG3)", "Archetype - Mizora (BG3)"]
+    },
+    "Unused":{
+        "human":{
+            "raceName":"Human",
+            "masculineFirst":["Cedric","Clemens","Eduard","Stefan","Ronald","Russell","Stewart","Han","Dammon","Alexander","Julian","Lann","Finnian","Kellan","Ragnar","Eddie","Garrick","Aldric","Marcus","Maxwell","Wesley","Samuel","Tristan","Owen","Gabriel","Declan","Donovan","Quentin","Harrison","Nathaniel","Elliott","Xavier","Miles","Lucas","Dorian","Tobias","Gideon"],
+            "feminineFirst":["Gloriana","Selene","Lyra","Ariana","Britta","Seraphina","Camelia","Isadora","Adelaide","Cecilia","Arabella","Lillian","Rosalind","Genevieve","Marigold","Felicity","Cassandra","Veronica","Matilda","Beatrice","Josephine","Helena","Miranda"],
+            "neutralFirst":["Ash","Billie","Skylar","Quinn","Blair","Sydney","Payton","Finley","Casey","Reese","Jamie","Morgan"],
+            "family":["Shaumann","Butters","Buttons","Striker","Windrider","Ashbourne","Fairchild","Ironwood","Blackwell","Oakheart","Frostbane","Firebrand","Whitewood","Swiftarrow","Hawksworth","Riversong","Stonehaven","Lightfoot","Nightshade","Shadowcrest","Sunfire","Wilderwood","Starfall","Moonshadow"]
+        },
+        "elf":{
+            "raceName":"Elf",
+            "masculineFirst":["Meric","Ryker","Elowen","Haldur","Kalias","Rezik","Aloth","Aradin","Thalorin","Caladorn","Elandil","Finrod","Thalion","Valarian","Galadrian","Elorian","Arandur","Lirael"],
+            "feminineFirst":["Aleida","Alois","Sina","Nadine","Lynn","Fara","Kana","Gracie","Isolde","Magilla","Atusa","Radeka","Arueshelae","Elara","Nuala","Bahara","Zuri","Eowyn","Isolde","Silfy","Alfira","Corde (Core-day)","Aeris","Caladwen","Finella","Galadriel","Illyria","Lyria","Meliantha","Nariel","Oriel","Rhiannon","Seraphina","Thalindra","Vaelora","Elowyn","Alara","Eloweth","Faeriel","Liriel","Nimue","Ysara"],
+            "neutralFirst":["Arlen","Belar","Caelum","Darian","Elaris","Finley","Galan","Illyrian","Joren","Kelar","Lior","Meridian","Nyx","Orion","Quinlan","Riven","Selene","Tavian","Vesper"],
+            "family":["Sevek","Yarrow","Kniles","Galarina","Dholo","Silverleaf","Starfall","Sunfire","Whitewing","Nightshade","Frostwind","Stormblade","Brightwater","Swiftarrow","Oakheart","Faerelorn","Thalorian","Wilderwood","Lightfoot","Dawnmist","Riversong","Fireheart","Shadowbrook","Starblossom"]
+        },
+        "dwarf":{
+            "raceName":"Dwarf",
+            "masculineFirst":["Ulric","Thrimal","Lagan","Regill","Grebb","Dugan","Arran (pronounced R N)","Lohar","Staunton","Malrum","Bardrak","Krumgarn","Rugan","Thormar","Grimbold","Brogan","Brolin","Haldor","Kharag","Thorvald","Torben","Grimbald","Darrak","Morgrim","Orin","Fargrim","Keldar","Torval","Draven","Balin","Thrain","Brondar"],
+            "feminineFirst":["Effie","Grisha","Thalia","Hilda","Helga","Greta","Astrid","Ingrid","Freya","Sigrid","Erika","Gunhild","Brunhilde","Gerda","Thyra","Solveig","Ragnhild","Sigrun","Runa","Dagmar","Brynhild","Hildegarde","Gudrun"],
+            "neutralFirst":["Torin","Dagny","Eir","Fjord","Haf","Jorn","Kari","Mika","Njord","Olin","Ragni","Sven","Tora","Ulf","Vesa","Ylva","Axel","Dag","Edda","Finn"],
+            "family":["Vhane","Ironbeard","Stonehammer","Goldforge","Steelbeard","Axegrinder","Silvervein","Thunderaxe","Rockshield","Deepdelver","Stronghammer","Fireheart","Battleborn","Mountainforge","Grimstone","Ironfist","Stoutshield","Boulderbane","Trueforge","Steelbrow","Ironclad"]
+        },
+        "halfling":{
+            "raceName":"Halfling",
+            "masculineFirst":["Emerson","Fulton","Greybor","Finnean","Sindri","Alder","Bramble","Corbin","Delvin","Eldon","Farley","Harlan","Jasper","Kelton","Linden","Milo","Norbert","Orson","Pippin","Quincy","Rollo","Silas","Thaddeus","Wilbur"],
+            "feminineFirst":["Daisy","Elsie","Fern","Greta","Hazel","Ivy","Juniper","Lottie","Maisie","Nellie","Olive","Poppy","Sadie","Tansy","Violet","Zinnia","Dottie"],
+            "neutralFirst":["Bailey","Ember","Frankie","Harper","Indigo","Kit","Nico","Pat","Sage","Oakley"],
+            "family":["Redstream","Elderberry","Greenfield","Willowbrook","Thistleburrow","Bramblethorn","Meadowbrook","Oakenshade","Sweetsong","Fairweather","Honeywell","Smallfoot","Lightfoot","Merryweather","Quickstep","Shortbread","Underhill","Brightwater","Swiftstride","Fuzzytoe","Whistlewick","Merryvale"]
+        },
+        "goblin":{
+            "raceName":"Goblin",
+            "masculineFirst":["Olak","Ollik","Grulak","Snik","Kragnok","Throg","Ruzgur","Klik","Urg","Murg","Zog","Grok","Snag","Brik","Flik","Vrak","Drog","Skrag","Grik","Blug","Thruk","Snarz"],
+            "feminineFirst":["Wendaug","Grizelda","Snarla","Krizza","Thraga","Rukka","Klikka","Urga","Murga","Zorga","Grola","Snaga","Brika","Flikka","Vrakka","Draga","Skraga","Grika","Blugla","Thruka","Snarza"],
+            "neutralFirst":["Grin","Snik","Kriv","Thrum","Rix","Klik","Urk","Mox","Zix","Grok","Snag","Brix","Flik","Vex","Drak","Skree","Grix","Blinx","Thrix","Snix"],
+            "family":["Snagtooth","Grimblood","Ratsbane","Mudhide","Gloomfang","Dirtclaw","Bonecrusher","Darkblade","Ironhide","Shadowgrip","Fangsnarl","Rustbone","Skullcrusher","Shadowmaw","Grimclaw","Rotfang","Blacktooth","Doomclaw","Nightshade","Deathfang"]
+        },
+        "funFactList":["Archetype - Lopen (Herdazian, Stormlight Archives)","Archetype - Zevlor (BG3)","Archetype - Viv (Legends and Lattes)","Archetype - Gimli (LOTR)","Archetype - Halsin (BG3)","Archetype - Dex (SW)","Archetype - Jughead (Riverdale)","Archetype - Manon (TOG)","Archetype - Spider-Gwen (Spiderverse)","Archetype - McGonagall (HP)","Archetype - Belatrix (HP)","Archetype - Padme (SW)","Archetype - Maz (SW)","Archetype - Glen Close (Dungeons and Daddies)","Archetype - Karlach (BG3)","Archetype - Shadowheart (BG3)","Archetype - Red Prince (DOS2)","Archetype - Alfira (BG3)","Archetype - Lois (MAWS)","Archetype - Jimmy (MAWS)","Archetype - Snape (HP)","Archetype - Wyll (BG3 - More the story of pacted hero)","Archetype - Takko (TAZ) - Brash but lovable rogue with a heart of gold.","Archetype - Bev (NADDPOD)","Archetype - Nenio (WOTR)","Archetype - Han Solo (Star Wars) - Cocky and charming smuggler with a moral compass.","Archetype - Sherlock Holmes (Sherlock Holmes) - Brilliant detective with a keen eye for detail.","Archetype - Arya Stark (Game of Thrones) - Resourceful and determined young warrior seeking revenge.","Archetype - Legolas (The Lord of the Rings) - Graceful and skilled elven archer with a strong sense of duty.","Archetype - Samwise Gamgee (The Lord of the Rings) - Loyal and steadfast companion with hidden bravery.","Archetype - Hermione Granger (Harry Potter) - Intelligent and studious witch with a knack for problem-solving.","Archetype - Dr. Jekyll and Mr. Hyde (Strange Case of Dr Jekyll and Mr Hyde) - Dual personality struggling with inner darkness.","Archetype - Deadpool (Marvel Comics) - Mercenary with a dark sense of humor and rapid healing factor.","Archetype - Gandalf (The Lord of the Rings) - Wise and powerful wizard guiding heroes on their journey.","Archetype - Katara (Avatar: The Last Airbender) - Compassionate and skilled waterbender fighting for justice.","Archetype - Tyrion Lannister (Game of Thrones) - Witty and cunning strategist navigating political intrigue.","Archetype - Lara Croft (Tomb Raider) - Adventurous archaeologist exploring ancient ruins.","Archetype - Batman (DC Comics) - Brooding and determined vigilante seeking justice for the innocent.","Archetype - Luna Lovegood (Harry Potter) - Eccentric and whimsical character with unique perspectives.","Archetype - Neville Longbottom (Harry Potter) - Timid and clumsy character who discovers hidden courage.","Archetype - Tonks (Harry Potter) - Quirky and shapeshifting character with a playful demeanor.","Archetype - Hagrid (Harry Potter) - Gentle giant with a love for magical creatures and nature.","Archetype - Lavender Brown (Harry Potter) - Bubbly and gossip-loving character with a romantic side.","Archetype - Fred and George Weasley (Harry Potter) - Mischievous and humorous twins known for their pranks.","Archetype - Filch (Harry Potter) - Grumpy and cantankerous caretaker of Hogwarts with a love for punishing rule-breakers.","Archetype - Walder Frey (Game of Thrones) - Ruthless and manipulative lord known for his treachery.","Archetype - Kreacher (Harry Potter) - Cranky and loyal house-elf with a deep-seated resentment.","Archetype - Osha (Game of Thrones) - Resourceful and loyal wildling character with a protective instinct.","Archetype - Moaning Myrtle (Harry Potter) - Whiny and ghostly character haunting the Hogwarts bathrooms.","Archetype - Aunt Petunia (Harry Potter) - Judgmental and snobbish character with a disdain for magic.","Archetype - Petyr Baelish (Game of Thrones) - Manipulative and ambitious character known for his political machinations.","Archetype - Gilderoy Lockhart (Harry Potter) - Narcissistic and boastful character famous for his fabricated exploits.","Archetype - Wormtail (Harry Potter) - Cowardly and treacherous character with a penchant for betrayal.","Archetype - Syrio Forel (Game of Thrones) - Wise and skilled swordsman known for his unique teaching methods.","Archetype - Rosmerta (Harry Potter) - Friendly and hospitable innkeeper of the Three Broomsticks pub in Hogsmeade.", "Archetype - Sybil Trelawney (Harry Potter) - Eccentric and mystical character with a penchant for prophecy."]
+    }
+}

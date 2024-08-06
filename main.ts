@@ -1,8 +1,8 @@
-import { GeneratorModal } from 'src/main/main-modal';
+import { GeneratorModal } from 'src/core/main-modal';
 import { MarkdownView, Notice, Plugin, Editor } from 'obsidian';
-import { FantasyPluginSettings } from 'src/settings/Datatypes';
-import { DEFAULT_SETTINGS } from 'src/settings/DefaultSetting';
-import { SettingTab } from 'src/settings/SettingsTab';
+import { FantasyPluginSettings } from 'src/types/settings/FantasyPluginSettings';
+import { DEFAULT_SETTINGS } from 'src/shared/default-settings/DefaultSetting';
+import { SettingsTab } from 'src/features/components/settings/SettingsTab';
 
 export default class FantasyPlugin extends Plugin {
 	settings: FantasyPluginSettings;
@@ -49,7 +49,7 @@ export default class FantasyPlugin extends Plugin {
 		});
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(new SettingTab(this.app, this));
+		this.addSettingTab(new SettingsTab(this.app, this));
 
 		console.log("loaded Fantasy Content Generator");
 	}
