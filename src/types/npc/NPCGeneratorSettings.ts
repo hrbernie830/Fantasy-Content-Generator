@@ -1,4 +1,5 @@
 import { NPCRaceSettings } from "../../types/npc/NPCRaceSettings";
+import * as DefaultSettingsUtils from "src/shared/utilities/default-settings-utils";
 
 export class NPCGeneratorSettings {
     human: NPCRaceSettings;
@@ -18,14 +19,9 @@ export class NPCGeneratorSettings {
         if(!notEmpty) {
             this.funFactList = [];
         } else if(defaultSettings) {
-            this.funFactList = this.DEFAULT_FUN_FACT_LIST;
+            this.funFactList = DefaultSettingsUtils.generateDefaultNPCFunFactSettings();
         }
     }
-
-
-    private DEFAULT_FUN_FACT_LIST = ["Has a cute dog companion."];
-
-
 }
 
 

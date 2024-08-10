@@ -1,14 +1,12 @@
-export function generateDefaultItemList(): any {
-  return {
-    "Common": {
-      "Dungeon Master's Guide": [
+export const COMMON_ITEMS = {
+    "Dungeon Master's Guide": [
         "Potion of Healing",
         "Potion of Climbing",
         "Spell Scroll (Cantrip)",
         "Spell Scroll (1st Level)",
         "Spell Scroll (2nd Level)"
-      ],
-      "Xanathar's Guide to Everything": [
+    ],
+    "Xanathar's Guide to Everything": [
         "Armor of Gleaming",
         "Bead of Nourishment",
         "Bead of Refreshment",
@@ -57,21 +55,21 @@ export function generateDefaultItemList(): any {
         "Wand of Pyrotechnics",
         "Wand of Scowls",
         "Wand of Smiles"
-      ],
-      "Tasha's Cauldron of Everything": [
+    ],
+    "Tasha's Cauldron of Everything": [
         "Illuminators Tattoo",
         "Masquerade Tattoo",
         "Prosthetic Limb",
         "Spellwrought Tattoo"
-      ],
-      "Explorer's Guide to Wildemount": [
+    ],
+    "Explorer's Guide to Wildemount": [
         "Breathing Bubble",
         "Coin of Delving",
         "Ersatz Eye",
         "Prosthetic Limb (Wildemount)",
         "Vox Seeker"
-      ],
-      "Acquisitions Incorporated": [
+    ],
+    "Acquisitions Incorporated": [
         "Cartographer's Map Case",
         "Coin of Decisionry (rank 2)",
         "Documancy Satchel (rank 2)",
@@ -79,8 +77,8 @@ export function generateDefaultItemList(): any {
         "Spyglass of Clairvoyance",
         "Voting Kit",
         "Whisper Jar (rank 1)"
-      ],
-      "Cricital Role: Call of the Netherdeep": [
+    ],
+    "Cricital Role: Call of the Netherdeep": [
         "Earring of Message",
         "Medal of Muscle",
         "Medal of the Conch",
@@ -89,47 +87,47 @@ export function generateDefaultItemList(): any {
         "Medal of the Meat Pie",
         "Medal of the Wetlands",
         "Medal of Wit"
-      ],
-      "Eberron: Rising from the Last War": [
+    ],
+    "Eberron: Rising from the Last War": [
         "Keycharm",
         "Prosthetic Limb",
         "Shiftweave",
         "Spellshard"
-      ],
-      "Ghosts of Saltmarsh": [
+    ],
+    "Ghosts of Saltmarsh": [
         "Pipe of Remembrance",
         "Pressure Capsule",
         "Sekolahian Worshiping Statuette"
-      ],
-      "Guildmasters' Guide to Ravnica": [
+    ],
+    "Guildmasters' Guide to Ravnica": [
         "Moodmark Paint"
-      ],
-      "Icewind Dale: Rime of the Frostmaiden": [
+    ],
+    "Icewind Dale: Rime of the Frostmaiden": [
         "Lantern of Tracking",
         "Thermal Cube"
-      ],
-      "Phandelver and Below: The Shattered Obelisk": [
+    ],
+    "Phandelver and Below: The Shattered Obelisk": [
         "Mind Crystal (Subtle)"
-      ],
-      "Strixhaven: A Curriculum of Chaos": [
+    ],
+    "Strixhaven: A Curriculum of Chaos": [
         "Bottle of Boundless Coffee",
         "Cuddly Strixhaven Mascot",
         "Masque Charm",
         "Strixhaven Pennant"
-      ],
-      "Tal’dorei Campaign Setting Reborn": [
+    ],
+    "Tal’dorei Campaign Setting Reborn": [
         "Doublet of Dramatic Demise"
-      ],
-      "Tryanny of Dragons": [
+    ],
+    "Tryanny of Dragons": [
         "Tankard of Plenty"
-      ],
-      "Waterdeep: Dungeon of the Mad Mage": [
+    ],
+    "Waterdeep: Dungeon of the Mad Mage": [
         "Chest of Preserving",
         "Orb of Gonging",
         "Potion of Comprehension",
         "Potion of Watchful Rest"
-      ],
-      "Wayfinder's Guide to Eberron": [
+    ],
+    "Wayfinder's Guide to Eberron": [
         "Armblade",
         "Band of Loyalty",
         "Cleansing Stone",
@@ -140,10 +138,11 @@ export function generateDefaultItemList(): any {
         "Orb of Shielding",
         "Scribe’s Pen",
         "Wand Sheath"
-      ]
-    },
-    "Uncommon": {
-      "Dungeon Master's Guide": [
+    ]
+}
+
+export const UNCOMMON_ITEMS = {
+    "Dungeon Master's Guide": [
         "Potion of Greater Healing",
         "Bag of Holding",
         "Driftglobe",
@@ -246,16 +245,16 @@ export function generateDefaultItemList(): any {
         "Ring of Warmth",
         "Stone of Good Luck (Luckstone)",
         "Winged Boots"
-      ],
-      "Explorer's Guide to Wildemount": [
+    ],
+    "Explorer's Guide to Wildemount": [
         "Amulet of the Drunkard",
         "Dust of Deliciousness",
         "Ring of Obscuring",
         "Rod of Retribution",
         "Brooch of Living Essence",
         "Goggles of Object Reading"
-      ],
-      "Acquisitions Incorporated": [
+    ],
+    "Acquisitions Incorporated": [
         "Coin of Decisionry (rank 3)",
         "Documancy Satchel (rank 3)",
         "Elder Cartographer's Glossography",
@@ -266,103 +265,103 @@ export function generateDefaultItemList(): any {
         "Sending Stone",
         "Travel Alchemical Kit",
         "Whisper Jar (rank 2)"
-      ],
-      "Baldur's Gate: Descent into Avernus": [
+    ],
+    "Baldur's Gate: Descent into Avernus": [
         "Hellfire Weapon",
         "Infernal Puzzle Box",
         "Soul Coin"
-      ],
-      "Bigby Presents: Glory of the Giants": [
+    ],
+    "Bigby Presents: Glory of the Giants": [
         "Prehistoric Figurines of Wondrous Power (Pyrite Plesiosaurus)"
-      ],
-      "Candlekeep Mysteries": [
+    ],
+    "Candlekeep Mysteries": [
         "Alchemy Jug (Blue)",
         "Alchemy Jug (Orange)",
         "Cracked Driftglobe",
         "Serpent Scale Armor"
-      ],
-      "Fizban's Treasury of Dragons": [
+    ],
+    "Fizban's Treasury of Dragons": [
         "Emerald Pen",
         "Dragon Vessel (Slumbering)",
         "Dragon's Wrath Weapon (Slumbering)",
         "Dragonhide Belt, +1",
         "Dragon-Touched Focus (Slumbering)",
         "Scaled Ornament (Slumbering)"
-      ],
-      "Hunt for the Thessalhydra": [
+    ],
+    "Hunt for the Thessalhydra": [
         "Winter's Dark Bite"
-      ],
-      "Infernal Machine Rebuild": [
+    ],
+    "Infernal Machine Rebuild": [
         "Blood of the Lycanthrope Antidote",
         "Crown of the Forest",
         "Mummy Rot Antidote",
         "Thessaltoxin Antidote"
-      ],
-      "Lost Mine of Phandelver": [
+    ],
+    "Lost Mine of Phandelver": [
         "Hew",
         "Lightbringer"
-      ],
-      "Princes of the Apocalypse": [
+    ],
+    "Princes of the Apocalypse": [
         "Balloon Pack",
         "Bottled Breath",
         "Seeker Dart",
         "Storm Boomerang",
         "Wingwear"
-      ],
-      "Phandelver and Below: The Shattered Obelisk": [
+    ],
+    "Phandelver and Below: The Shattered Obelisk": [
         "Mind Crystal (Distant)",
         "Mind Crystal (Empowered)",
         "Mind Crystal (Extended)",
         "Mind Crystal (Careful)",
         "Potion of Psionic Fortitude",
         "Ring of the Orator"
-      ],
-      "Spelljammer: Adventures in Space": [
+    ],
+    "Spelljammer: Adventures in Space": [
         "Wildspace Orrery"
-      ],
-      "Tal’dorei Campaign Setting Reborn": [
+    ],
+    "Tal’dorei Campaign Setting Reborn": [
         "Boots of the Vigilant",
         "Echo Stone",
         "Rod of Mercurial Form"
-      ],
-      "The Hidden Shrine of Tamoachan": [
+    ],
+    "The Hidden Shrine of Tamoachan": [
         "Balance of Harmony",
         "Stone of Ill Luck"
-      ],
-      "The Sunless Citadel": [
+    ],
+    "The Sunless Citadel": [
         "Night Caller",
         "Shatterspike",
         "Wand of Entangle"
-      ],
-      "The Wild Beyond the Witchlight": [
+    ],
+    "The Wild Beyond the Witchlight": [
         "Dust of Corrosion",
         "Pixie Dust",
         "Potion of Advantage"
-      ],
-      "Tomb of Annihilation": [
+    ],
+    "Tomb of Annihilation": [
         "Mask of the Beast",
         "Yklwa, +1"
-      ],
-      "Tryanny of Dragons": [
+    ],
+    "Tryanny of Dragons": [
         "Insignia of Claws"
-      ],
-      "Waterdeep: Dragon Heist": [
+    ],
+    "Waterdeep: Dragon Heist": [
         "Paper Bird",
         "Smokepowder",
         "Ring of Truth Telling"
-      ],
-      "Wayfinder's Guide to Eberron": [
+    ],
+    "Wayfinder's Guide to Eberron": [
         "Bag of Bounty",
         "Glamerweave (Uncommon)",
         "Wheel of Wind and Water",
         "Inquisitive's Goggles",
         "Rings of Shared Suffering"
-      ],
-      "Planescape: Adventures in the Multiverse": [
+    ],
+    "Planescape: Adventures in the Multiverse": [
         "Portal Compass",
         "Sensory Stone"
-      ],
-      "The Book of Many Things": [
+    ],
+    "The Book of Many Things": [
         "Armor of Fungal Spores",
         "Bloodrage Greataxe",
         "Card Sharp's Deck",
@@ -381,14 +380,14 @@ export function generateDefaultItemList(): any {
         "Fabulist Gem",
         "Plate of Knight's Fellowship",
         "Shield of the Tortoise"
-      ],
-      "Dungeons of Drakkenheim": [
+    ],
+    "Dungeons of Drakkenheim": [
         "Flame Lance",
         "Purging Rod",
         "Skymetal Shield",
         "Spellpiercing Wand"
-      ],
-      "Tasha's Cauldron of Everything": [
+    ],
+    "Tasha's Cauldron of Everything": [
         "Nature's Mantle",
         "All Purpose Tool, +1",
         "Coiling Grasp Tattoo",
@@ -401,20 +400,20 @@ export function generateDefaultItemList(): any {
         "Bloodwell Vial, +1",
         "Moon Sickle, +1",
         "Rhythm Maker's Drum, +1"
-      ],
-      "Curse of Strahd": [
+    ],
+    "Curse of Strahd": [
         "Blood Spear"
-      ],
-      "Eberron: Rising from the Last War": [
+    ],
+    "Eberron: Rising from the Last War": [
         "Earworm",
         "Finder's Goggles",
         "Living Gloves"
-      ],
-      "Ghosts of Saltmarsh": [
+    ],
+    "Ghosts of Saltmarsh": [
         "Cursed Luckstone",
         "Helm of Underwater Action"
-      ],
-      "Guildmasters' Guide to Ravnica": [
+    ],
+    "Guildmasters' Guide to Ravnica": [
         "Rakdos Keyrune",
         "Simic Keyrune",
         "Azorius Guild Signet",
@@ -431,44 +430,45 @@ export function generateDefaultItemList(): any {
         "Pyroconverger",
         "Skyblinder Staff",
         "Spies' Murmur"
-      ],
-      "Icewind Dale: Rime of the Frostmaiden": [
+    ],
+    "Icewind Dale: Rime of the Frostmaiden": [
         "Orc Stone",
         "Psi Crystal"
-      ],
-      "Out of the Abyss": [
+    ],
+    "Out of the Abyss": [
         "Piwafwi (Cloak of Elvenkind)",
         "Spell Gem (Lapis Lazuli)",
         "Spell Gem (Obsidian)"
-      ],
-      "Storm King's Thunder": [
+    ],
+    "Storm King's Thunder": [
         "Robe of Serpents"
-      ],
-      "Strixhaven: A Curriculum of Chaos": [
+    ],
+    "Strixhaven: A Curriculum of Chaos": [
         "Lorehold Primer",
         "Prismari Primer",
         "Quandrix Primer",
         "Silverquill Primer",
         "Witherbloom Primer"
-      ],
-      "Van Richten's Guide to Ravenloft": [
+    ],
+    "Van Richten's Guide to Ravenloft": [
         "Harkon's Bite"
-      ],
-      "Waterdeep: Dungeon of the Mad Mage": [
+    ],
+    "Waterdeep: Dungeon of the Mad Mage": [
         "Circlet of Human Perfection",
         "Propeller Helm"
-      ],
-      "Lairs of Etharis": [
+    ],
+    "Lairs of Etharis": [
         "Wand of Silence"
-      ],
-      "Humblewood Campaign Setting": [
+    ],
+    "Humblewood Campaign Setting": [
         "Nest Charm",
         "Red-Feather Bow",
         "Wing Crest Shield"
-      ]
-    },
-    "Rare": {
-      "Dungeon Master's Guide": [
+    ]
+}
+
+export const RARE_ITEMS = {
+    "Dungeon Master's Guide": [
         "Potion of Superior Healing",
         "Spell Scroll (4th Level)",
         "Spell Scroll (5th Level)",
@@ -597,8 +597,8 @@ export function generateDefaultItemList(): any {
         "Armor of Resistance, Half Plate",
         "Armor of Resistance, Plate",
         "Armor of Resistance, Any"
-      ],
-      "Explorer's Guide to Wildemount": [
+    ],
+    "Explorer's Guide to Wildemount": [
         "Potion of Maximum Power",
         "Weapon of Certain Death",
         "Acheron Blade",
@@ -608,8 +608,8 @@ export function generateDefaultItemList(): any {
         "Needle of Mending",
         "Ring of Temporal Salvation",
         "Staff of the Ivory Claw"
-      ],
-      "Acquisitions Incorporated": [
+    ],
+    "Acquisitions Incorporated": [
         "Documancy Satchel (rank 4)",
         "Living Loot Satchel (rank 3)",
         "Mithral Half Plate, +1",
@@ -620,13 +620,13 @@ export function generateDefaultItemList(): any {
         "Whisper Jar (rank 3)",
         "Failed Experiment Wand",
         "Piercer"
-      ],
-      "Against the Giant": [
+    ],
+    "Against the Giant": [
         "Potion of Mind Control (Beast)",
         "Potion of Mind Control (Humanoid)",
         "Hell Hound Cloak"
-      ],
-      "Bigby Presents: Glory of the Giants": [
+    ],
+    "Bigby Presents: Glory of the Giants": [
         "Glowrune Pigment",
         "Lash of Immolation",
         "Prehistoric Figurines of Wondrous Power (Kyanite Pteranodon)",
@@ -636,21 +636,21 @@ export function generateDefaultItemList(): any {
         "Staff of the Rooted Hills",
         "Wayfarer's Boots",
         "Zephyr Armor"
-      ],
-      "Candlekeep Mysteries": [
+    ],
+    "Candlekeep Mysteries": [
         "Serpent's Fang"
-      ],
-      "Cricital Role: Call of the Netherdeep": [
+    ],
+    "Cricital Role: Call of the Netherdeep": [
         "Teleportation Tablet"
-      ],
-      "Dead in Thay": [
+    ],
+    "Dead in Thay": [
         "Robe of Summer",
         "Loadstone"
-      ],
-      "Dungeons & Dragons vs. Rick and Morty": [
+    ],
+    "Dungeons & Dragons vs. Rick and Morty": [
         "Concertina"
-      ],
-      "Guildmasters' Guide to Ravnica": [
+    ],
+    "Guildmasters' Guide to Ravnica": [
         "Mizzium Armor",
         "Mizzium Mortar",
         "Azorius Keyrune",
@@ -661,41 +661,41 @@ export function generateDefaultItemList(): any {
         "Selesnya Keyrune",
         "Pariah's Shield",
         "Sunforger"
-      ],
-      "Icewind Dale: Rime of the Frostmaiden": [
+    ],
+    "Icewind Dale: Rime of the Frostmaiden": [
         "Cauldron of Plenty",
         "Hook of Fisher's Delight",
         "Professor Skant",
         "Shield Guardian Amulet"
-      ],
-      "Infernal Machine Rebuild": [
+    ],
+    "Infernal Machine Rebuild": [
         "Bridle of Capturing"
-      ],
-      "Lost Mine of Phandelver": [
+    ],
+    "Lost Mine of Phandelver": [
         "Dragonguard",
         "Spider Staff",
         "Staff of Defense"
-      ],
-      "Mythis Odysseys of Theros": [
+    ],
+    "Mythis Odysseys of Theros": [
         "Flying Chariot",
         "Potion of Aqueous Form",
         "Two-Birds Sling",
         "Helm of the Gods",
         "Molten Bronze Skin",
         "Siren Song Lyre"
-      ],
-      "Phandelver and Below: The Shattered Obelisk": [
+    ],
+    "Phandelver and Below: The Shattered Obelisk": [
         "Mind Crystal (Heightened)",
         "Mind Crystal (Quickened)",
         "Bracers of Celerity",
         "Flayer Slayer",
         "Luminous War Pick",
         "Netherese Ring of Protection"
-      ],
-      "Sleeping Dragon's Wake": [
+    ],
+    "Sleeping Dragon's Wake": [
         "Bonecounter"
-      ],
-      "Tal’dorei Campaign Setting Reborn": [
+    ],
+    "Tal’dorei Campaign Setting Reborn": [
         "Magician's Judge",
         "Stormrider Boots",
         "Coat of the Crest",
@@ -706,33 +706,33 @@ export function generateDefaultItemList(): any {
         "Oceanic Weapon",
         "Skysail",
         "Summer's Dance"
-      ],
-      "The Hidden Shrine of Tamoachan": [
+    ],
+    "The Hidden Shrine of Tamoachan": [
         "Eagle Whistle",
         "Mirror of the Past",
         "Amulet of Protection from Turning"
-      ],
-      "The Wild Beyond the Witchlight": [
+    ],
+    "The Wild Beyond the Witchlight": [
         "Chromatic Rose",
         "Woodcutter's Axe",
         "Scissors of Shadow Snipping"
-      ],
-      "Tomb of Annihilation": [
+    ],
+    "Tomb of Annihilation": [
         "Yklwa, +2",
         "Ghost Lantern",
         "Scorpion Armor"
-      ],
-      "Tryanny of Dragons": [
+    ],
+    "Tryanny of Dragons": [
         "Dragontooth Dagger",
         "Wand of Winter"
-      ],
-      "Waterdeep: Dungeon of the Mad Mage": [
+    ],
+    "Waterdeep: Dungeon of the Mad Mage": [
         "Dodecahedron of Doom",
         "Horn of the Endless Maze",
         "Professor Orb",
         "Dagger of Blindsight"
-      ],
-      "The Book of Many Things": [
+    ],
+    "The Book of Many Things": [
         "Grasping Whip",
         "Wraps of Unarmed Prowess, +2",
         "Bow of Conflagration",
@@ -752,8 +752,8 @@ export function generateDefaultItemList(): any {
         "Sun Staff",
         "Voidwalker Armor",
         "Warrior's Passkey"
-      ],
-      "Lairs of Etharis": [
+    ],
+    "Lairs of Etharis": [
         "Arcane Oil",
         "Lycan Weapon",
         "Lycanthropy Antidote",
@@ -761,8 +761,8 @@ export function generateDefaultItemList(): any {
         "Coat of Lies",
         "Glass-Studded Armor",
         "Knifewing Cape"
-      ],
-      "Dungeons of Drakkenheim": [
+    ],
+    "Dungeons of Drakkenheim": [
         "Aqua Delerium",
         "Aqua Expurgo",
         "Bottled Comet",
@@ -779,8 +779,8 @@ export function generateDefaultItemList(): any {
         "Starcrossed Bow",
         "Steward's Seal",
         "The Shield of Sacred Flame"
-      ],
-      "Tasha's Cauldron of Everything": [
+    ],
+    "Tasha's Cauldron of Everything": [
         "Alchemical Compendium",
         "Astral Shard",
         "Astromancy Archive",
@@ -807,21 +807,21 @@ export function generateDefaultItemList(): any {
         "Bloodwell Vial, +2",
         "Moon Sickle, +2",
         "Rhythm Maker's Drum, +2"
-      ],
-      "Baldur's Gate: Descent into Avernus": [
+    ],
+    "Baldur's Gate: Descent into Avernus": [
         "Gauntlets of Flaming Fury"
-      ],
-      "Curse of Strahd": [
+    ],
+    "Curse of Strahd": [
         "Gulthias Staff",
         "Saint Markovia's Thighbone"
-      ],
-      "Dragonlance: Shadow of the Dragon Queen": [
+    ],
+    "Dragonlance: Shadow of the Dragon Queen": [
         "Kagonesti Forest Shroud"
-      ],
-      "Eberron: Rising from the Last War": [
+    ],
+    "Eberron: Rising from the Last War": [
         "Ventilating Lungs"
-      ],
-      "Fizban's Treasury of Dragons": [
+    ],
+    "Fizban's Treasury of Dragons": [
         "Crystal Blade",
         "Dragon Vessel (Stirring)",
         "Dragon Wing Bow",
@@ -829,14 +829,14 @@ export function generateDefaultItemList(): any {
         "Dragonhide Belt, +2",
         "Dragon-Touched Focus (Stirring)",
         "Scaled Ornament (Stirring)"
-      ],
-      "Ghosts of Saltmarsh": [
+    ],
+    "Ghosts of Saltmarsh": [
         "Charm of Plant Command"
-      ],
-      "Keys from the Golden Vault": [
+    ],
+    "Keys from the Golden Vault": [
         "Shard of Xeluan"
-      ],
-      "Lost Laboratory of Kwalish": [
+    ],
+    "Lost Laboratory of Kwalish": [
         "Galder's Bubble Pipe",
         "Gambler's Blade",
         "Ioun Stone of Historical Knowledge",
@@ -846,22 +846,22 @@ export function generateDefaultItemList(): any {
         "Ioun Stone of Self-Preservation",
         "Ioun Stone of Supreme Intellect",
         "Leather Golem Armor"
-      ],
-      "Out of the Abyss": [
+    ],
+    "Out of the Abyss": [
         "Piwafwi of Fire Resistance",
         "Spell Gem (Bloodstone)",
         "Spell Gem (Quartz)",
         "Stonespeaker Crystal",
         "Wand of Viscid Globs"
-      ],
-      "Princes of the Apocalypse": [
+    ],
+    "Princes of the Apocalypse": [
         "Claws of the Umber Hulk",
         "Weird Tank"
-      ],
-      "Spelljammer: Adventures in Space": [
+    ],
+    "Spelljammer: Adventures in Space": [
         "Spelljamming Helm"
-      ],
-      "Storm King's Thunder": [
+    ],
+    "Storm King's Thunder": [
         "Banner of the Krig Rune",
         "Blod Stone",
         "Claw of the Wyrm Rune",
@@ -869,26 +869,27 @@ export function generateDefaultItemList(): any {
         "Opal of the Ild Rune",
         "Orb of the Stein Rune",
         "Rod of the Vonindod"
-      ],
-      "Waterdeep: Dragon Heist": [
+    ],
+    "Waterdeep: Dragon Heist": [
         "Badge of the Watch",
         "Bracer of Flying Daggers",
         "Feather of Diatryma Summoning",
         "Knave's Eye Patch"
-      ],
-      "Wayfinder's Guide to Eberron": [
+    ],
+    "Wayfinder's Guide to Eberron": [
         "Docent"
-      ],
-      "Planescape: Adventures in the Multiverse": [
+    ],
+    "Planescape: Adventures in the Multiverse": [
         "Mimir"
-      ],
-      "Humblewood Campaign Setting": [
+    ],
+    "Humblewood Campaign Setting": [
         "Blade of the Wood",
         "Feathered Helm"
-      ]
-    },
-    "Very Rare": {
-      "Dungeon Master's Guide": [
+    ]
+}
+
+export const VERY_RARE_ITEMS = {
+    "Dungeon Master's Guide": [
         "Potion of Supreme Healing",
         "Potion of Invisibility",
         "Potion of Speed",
@@ -972,8 +973,8 @@ export function generateDefaultItemList(): any {
         "Nine Lives Stealer",
         "Oathbow",
         "Spellguard Shield"
-      ],
-      "Tasha's Cauldron of Everything": [
+    ],
+    "Tasha's Cauldron of Everything": [
         "Reincarnation Dust",
         "All Purpose Tool, +3",
         "Amulet of the Devout, +3",
@@ -988,8 +989,8 @@ export function generateDefaultItemList(): any {
         "Ghost Step Tattoo",
         "Lifewell Tattoo",
         "Orb of the Veil"
-      ],
-      "Explorer's Guide to Wildemount": [
+    ],
+    "Explorer's Guide to Wildemount": [
         "Arcane Cannon",
         "Dispelling Stone",
         "Last Stand Armor",
@@ -998,8 +999,8 @@ export function generateDefaultItemList(): any {
         "Duskcrusher",
         "Hunter's Coat",
         "Staff of Dunamancy"
-      ],
-      "Acquisitions Incorporated": [
+    ],
+    "Acquisitions Incorporated": [
         "Living Loot Satchel (rank 4)",
         "Occultant Abacus (rank 4)",
         "Portfolio Keeper (rank 4)",
@@ -1010,11 +1011,11 @@ export function generateDefaultItemList(): any {
         "Rotor of Return",
         "Timepiece of Travel",
         "Wheel of Stars"
-      ],
-      "Against the Giant": [
+    ],
+    "Against the Giant": [
         "Potion of Mind Control (Monster)"
-      ],
-      "Bigby Presents: Glory of the Giants": [
+    ],
+    "Bigby Presents: Glory of the Giants": [
         "Prehistoric Figurines of Wondrous Power (Carnelian Triceratops)",
         "Thunderbuss",
         "Armor of Safeguarding",
@@ -1026,45 +1027,45 @@ export function generateDefaultItemList(): any {
         "Ring of Amity",
         "Sanctum Amulet",
         "Wyrmreaver Gauntlets"
-      ],
-      "Eberron: Rising from the Last War": [
+    ],
+    "Eberron: Rising from the Last War": [
         "Speaking Stone",
         "Arcane Propulsion Arm",
         "Dyrrn's Tentacle Whip",
         "Kyrzin's Ooze",
         "Living Armor"
-      ],
-      "Icewind Dale: Rime of the Frostmaiden": [
+    ],
+    "Icewind Dale: Rime of the Frostmaiden": [
         "Abracadabrus"
-      ],
-      "Mythis Odysseys of Theros": [
+    ],
+    "Mythis Odysseys of Theros": [
         "Sling Bullets of Althemone"
-      ],
-      "Princes of the Apocalypse": [
+    ],
+    "Princes of the Apocalypse": [
         "Devastation Orb"
-      ],
-      "Spelljammer: Adventures in Space": [
+    ],
+    "Spelljammer: Adventures in Space": [
         "Fish Suit"
-      ],
-      "Tal’dorei Campaign Setting Reborn": [
+    ],
+    "Tal’dorei Campaign Setting Reborn": [
         "Cataclysm Bolts",
         "Mirror of Infinite Transpondence",
         "Raven's Slumber",
         "Boots of Haste",
         "Corecut Dagger",
         "Tinkertop Boltblaster 1000"
-      ],
-      "The Wild Beyond the Witchlight": [
+    ],
+    "The Wild Beyond the Witchlight": [
         "Ornithopter of Flying",
         "Bobbing Lily Pad",
         "Eldritch Staff",
         "Steel"
-      ],
-      "Tomb of Annihilation": [
+    ],
+    "Tomb of Annihilation": [
         "Yklwa, +3",
         "Amulet of the Black Skull"
-      ],
-      "The Book of Many Things": [
+    ],
+    "The Book of Many Things": [
         "Baleful Talon",
         "Bloodseeker Ammunition",
         "Deck of Wild Cards",
@@ -1088,34 +1089,34 @@ export function generateDefaultItemList(): any {
         "Stonemaker War Pick",
         "Tidecaller Trident",
         "Weapon of Throne's Command"
-      ],
-      "Lairs of Etharis": [
+    ],
+    "Lairs of Etharis": [
         "Lindwyrm Venom",
         "Brazen Armor"
-      ],
-      "Dungeons of Drakkenheim": [
+    ],
+    "Dungeons of Drakkenheim": [
         "Hazewalker Plate",
         "Comet Smasher"
-      ],
-      "Baldur's Gate: Descent into Avernus": [
+    ],
+    "Baldur's Gate: Descent into Avernus": [
         "Battle Standard of Infernal Power",
         "Helm of Devil Command"
-      ],
-      "Candlekeep Mysteries": [
+    ],
+    "Candlekeep Mysteries": [
         "Staff of Fate",
         "Watchful Helm"
-      ],
-      "Cricital Role: Call of the Netherdeep": [
+    ],
+    "Cricital Role: Call of the Netherdeep": [
         "Ring of Red Fury",
         "Ruidium Armor",
         "Ruidium Shield",
         "Ruidium Weapon"
-      ],
-      "Dragonlance: Shadow of the Dragon Queen": [
+    ],
+    "Dragonlance: Shadow of the Dragon Queen": [
         "Flying Citadel Helm",
         "Mirror of Reflected Pasts"
-      ],
-      "Fizban's Treasury of Dragons": [
+    ],
+    "Fizban's Treasury of Dragons": [
         "Amethyst Lodestone",
         "Dragon Vessel (Wakened)",
         "Dragon's Wrath Weapon (Wakened)",
@@ -1123,62 +1124,63 @@ export function generateDefaultItemList(): any {
         "Dragon-Touched Focus (Wakened)",
         "Sapphire Buckler",
         "Scaled Ornament (Wakened)"
-      ],
-      "Guildmasters' Guide to Ravnica": [
+    ],
+    "Guildmasters' Guide to Ravnica": [
         "Dimir Keyrune",
         "Golgari Keyrune",
         "Illusionist's Bracers",
         "Peregrine Mask",
         "Sword of the Paruns",
         "Voyager Staff"
-      ],
-      "Infernal Machine Rebuild": [
+    ],
+    "Infernal Machine Rebuild": [
         "Ioun Stone of Vitality"
-      ],
-      "Keys from the Golden Vault": [
+    ],
+    "Keys from the Golden Vault": [
         "Constantori's Portrait"
-      ],
-      "Lost Laboratory of Kwalish": [
+    ],
+    "Lost Laboratory of Kwalish": [
         "Blade of the Medusa",
         "Heward's Hireling Armor",
         "Polymorph Blade"
-      ],
-      "Out of the Abyss": [
+    ],
+    "Out of the Abyss": [
         "Spell Gem (Amber)",
         "Spell Gem (Jade)",
         "Spell Gem (Topaz)"
-      ],
-      "Phandelver and Below: The Shattered Obelisk": [
+    ],
+    "Phandelver and Below: The Shattered Obelisk": [
         "Cape of Enlargement",
         "Mindblasting Cap",
         "Mindguard Crown",
         "Mudslick Tower"
-      ],
-      "Storm King's Thunder": [
+    ],
+    "Storm King's Thunder": [
         "Conch of Teleportation",
         "Ingot of the Skold Rune",
         "Navigation Orb",
         "Pennant of the Vind Rune",
         "Shard of the Ise Rune"
-      ],
-      "The Hidden Shrine of Tamoachan": [
+    ],
+    "The Hidden Shrine of Tamoachan": [
         "Bracelet of Rock Magic"
-      ],
-      "Tomb of Horrors": [
+    ],
+    "Tomb of Horrors": [
         "Javelin of Backbiting",
         "Spear of Backbiting"
-      ],
-      "Waterdeep: Dragon Heist": [
+    ],
+    "Waterdeep: Dragon Heist": [
         "Lord's Ensemble"
-      ],
-      "Waterdeep: Dungeon of the Mad Mage": [
+    ],
+    "Waterdeep: Dungeon of the Mad Mage": [
         "Blast Scepter",
         "Horned Ring",
         "Shield of the Uven Rune"
-      ]
-    },
-    "Legendary": {
-      "Dungeon Master's Guide": [
+    ]
+}
+
+export const LEGENDARY_ITEMS = {
+    "Dungeon Master's Guide": [
         "Potion of Giant Strength (Storm Giant)",
         "Spell Scroll (9th Level)",
         "Universal Solvent",
@@ -1246,8 +1248,8 @@ export function generateDefaultItemList(): any {
         "Moonblade",
         "Blackrazor",
         "Wave"
-      ],
-      "Explorer's Guide to Wildemount": [
+    ],
+    "Explorer's Guide to Wildemount": [
         "Luxon Beacon",
         "Nightfall Pearl",
         "Spell Bottle",
@@ -1258,16 +1260,16 @@ export function generateDefaultItemList(): any {
         "Stormgirdle",
         "Verminshroud",
         "Wreath of the Prism"
-      ],
-      "Baldur's Gate: Descent into Avernus": [
+    ],
+    "Baldur's Gate: Descent into Avernus": [
         "Obsidian Flint Dragon Plate",
         "Fane-Eater",
         "Matalotok",
         "Shield of the Hidden Lord",
         "Blade of Avernus",
         "Sword of Zariel"
-      ],
-      "Bigby Presents: Glory of the Giants": [
+    ],
+    "Bigby Presents: Glory of the Giants": [
         "Prehistoric Figurines of Wondrous Power (Jasper Tyrannosaurus Rex)",
         "Longbow of the Healing Hearth",
         "Orb of Skoraeus",
@@ -1278,12 +1280,12 @@ export function generateDefaultItemList(): any {
         "Bigby’s Beneficent Bracelet",
         "Harp of Gilded Plenty",
         "Helm of Perfect Potential"
-      ],
-      "Candlekeep Mysteries": [
+    ],
+    "Candlekeep Mysteries": [
         "Nether Scroll of Azumar",
         "Gloves of Soul Catching"
-      ],
-      "Fizban's Treasury of Dragons": [
+    ],
+    "Fizban's Treasury of Dragons": [
         "Gold Canary Figurine of Wondrous Power",
         "Potion of Dragon's Majesty",
         "Dragon Vessel (Ascendant)",
@@ -1295,41 +1297,41 @@ export function generateDefaultItemList(): any {
         "Ruby Weave Gem",
         "Scaled Ornament (Ascendant)",
         "Topaz Annihilator"
-      ],
-      "Icewind Dale: Rime of the Frostmaiden": [
+    ],
+    "Icewind Dale: Rime of the Frostmaiden": [
         "Scroll of Tarrasque Summoning",
         "Scroll of the Comet",
         "Ythryn Mythallar"
-      ],
-      "Journeys through the Radiant Citadel": [
+    ],
+    "Journeys through the Radiant Citadel": [
         "Hammock of Worlds"
-      ],
-      "Legendary Magic Items": [
+    ],
+    "Legendary Magic Items": [
         "Hither-Thither Staff",
         "Red Wizard Blade",
         "Tablet of Reawakening",
         "Helm of Disjunction",
         "Horn of Beckoning Death"
-      ],
-      "Lost Laboratory of Kwalish": [
+    ],
+    "Lost Laboratory of Kwalish": [
         "Deck of Several Things",
         "Powered Armor"
-      ],
-      "Mythis Odysseys of Theros": [
+    ],
+    "Mythis Odysseys of Theros": [
         "Pyxis of Pandemonium",
         "Akmon, Hammer of Purphoros",
         "Dekella, Bident of Thassa",
         "Ephixis, Bow of Nylea",
         "Khrusor, Spear of Heliod",
         "Mastix, Whip of Erebos"
-      ],
-      "Storm King's Thunder": [
+    ],
+    "Storm King's Thunder": [
         "Potion of Giant Size",
         "Gurt’s Greataxe",
         "Korolnor Scepter",
         "Wyrmskull Throne"
-      ],
-      "The Book of Many Things": [
+    ],
+    "The Book of Many Things": [
         "Deck of Many More Things",
         "Telescopic Transporter",
         "Euryale’s Aegis",
@@ -1337,8 +1339,8 @@ export function generateDefaultItemList(): any {
         "Jester’s Mask",
         "Spindle of Fate",
         "Sword of the Planes"
-      ],
-      "Tasha's Cauldron of Everything": [
+    ],
+    "Tasha's Cauldron of Everything": [
         "Blood Fury Tattoo",
         "Baba Yaga's Mortar And Pestle",
         "Crook of Rao",
@@ -1346,61 +1348,61 @@ export function generateDefaultItemList(): any {
         "Luba's Tarokka of Souls",
         "Mighty Servant of Leuk-O",
         "Teeth of Dahlver-Nar"
-      ],
-      "Against the Giant": [
+    ],
+    "Against the Giant": [
         "Waythe"
-      ],
-      "Cricital Role: Call of the Netherdeep": [
+    ],
+    "Cricital Role: Call of the Netherdeep": [
         "Jewel of Three Prayers"
-      ],
-      "Curse of Strahd": [
+    ],
+    "Curse of Strahd": [
         "Holy Symbol of Ravenkind",
         "Icon of Ravenloft",
         "Sunsword",
         "Crusader’s Shortsword",
         "Shield of the Silver Dragon"
-      ],
-      "Eberron: Rising from the Last War": [
+    ],
+    "Eberron: Rising from the Last War": [
         "Belashyrra’s Beholder Crown"
-      ],
-      "Guildmasters' Guide to Ravnica": [
+    ],
+    "Guildmasters' Guide to Ravnica": [
         "Rakdos Riteknife"
-      ],
-      "Infernal Machine Rebuild": [
+    ],
+    "Infernal Machine Rebuild": [
         "Ruinblade",
         "The Infernal Machine of Lum the Mad"
-      ],
-      "Keys from the Golden Vault": [
+    ],
+    "Keys from the Golden Vault": [
         "Shard Solitaire",
         "Book of Vile Darkness (Variant)"
-      ],
-      "Monstrous Compendium Volume 2: Dragonlance Creatures": [
+    ],
+    "Monstrous Compendium Volume 2: Dragonlance Creatures": [
         "Nightbringer"
-      ],
-      "Mordenkainen Presents: Monsters of the Multiverse": [
+    ],
+    "Mordenkainen Presents: Monsters of the Multiverse": [
         "Infernal Track"
-      ],
-      "Out of the Abyss": [
+    ],
+    "Out of the Abyss": [
         "Dawnbringer",
         "Spell Gem (Diamond)",
         "Spell Gem (Ruby)",
         "Spell Gem (Star Ruby)"
-      ],
-      "Princes of the Apocalypse": [
+    ],
+    "Princes of the Apocalypse": [
         "Drown",
         "Ironfang",
         "Lost Crown of Besilmer",
         "Orcsplitter",
         "Tinderstrike",
         "Windvane"
-      ],
-      "Spelljammer: Adventures in Space": [
+    ],
+    "Spelljammer: Adventures in Space": [
         "Talarith"
-      ],
-      "Strixhaven: A Curriculum of Chaos": [
+    ],
+    "Strixhaven: A Curriculum of Chaos": [
         "Murgaxor’s Orb"
-      ],
-      "Tal’dorei Campaign Setting Reborn": [
+    ],
+    "Tal’dorei Campaign Setting Reborn": [
         "Agony",
         "Armor of the Valiant Soul",
         "Cabal’s Ruin",
@@ -1419,19 +1421,19 @@ export function generateDefaultItemList(): any {
         "Titanstone Knuckles",
         "Whisper",
         "Wraps of Dyamak"
-      ],
-      "The Wild Beyond the Witchlight": [
+    ],
+    "The Wild Beyond the Witchlight": [
         "Snicker-Snack",
         "Witchlight Vane",
         "Witchlight Watch",
         "Iggwilv's Cauldron"
-      ],
-      "Tomb of Annihilation": [
+    ],
+    "Tomb of Annihilation": [
         "Bookmark",
         "Ring of Winter",
         "Staff of the Forgotten One"
-      ],
-      "Tryanny of Dragons": [
+    ],
+    "Tryanny of Dragons": [
         "Black Dragon Mask",
         "Blue Dragon Mask",
         "Green Dragon Mask",
@@ -1440,70 +1442,69 @@ export function generateDefaultItemList(): any {
         "White Dragon Mask",
         "Draakhorn",
         "Mask of the Dragon Queen"
-      ],
-      "Van Richten's Guide to Ravenloft": [
+    ],
+    "Van Richten's Guide to Ravenloft": [
         "Nepenthe"
-      ],
-      "Waterdeep: Dragon Heist": [
+    ],
+    "Waterdeep: Dragon Heist": [
         "Azuredge",
         "Blackstaff",
         "Dragonstaff of Ahghairon",
         "Stone of Golorr"
-      ],
-      "Waterdeep: Dungeon of the Mad Mage": [
+    ],
+    "Waterdeep: Dungeon of the Mad Mage": [
         "Black Crystal Tablet",
         "Helm of the Scavenger",
         "Tearulai"
-      ],
-      "Dungeons of Drakkenheim": [
+    ],
+    "Dungeons of Drakkenheim": [
         "Crown of Westemar",
         "Ignacious, the Sword of Burning Truth",
         "Inscrutable Staff",
         "Spymaster's Signet",
         "Staff of Contaminated Power"
-      ],
-      "Humblewood Campaign Setting": [
+    ],
+    "Humblewood Campaign Setting": [
         "The Borealus",
         "Necronomicon Ex Corvis"
-      ],
-      "Acquisitions Incorporated": [
+    ],
+    "Acquisitions Incorporated": [
         "Orrery of the Wanderer"
-      ],
-      "Divine Contention": [
+    ],
+    "Divine Contention": [
         "Ruinstone"
-      ]
-    },
-    "Other": {
-      "Bigby Presents: Glory of the Giants": [
+    ]
+}
+
+export const OTHER_ITEMS = {
+    "Bigby Presents: Glory of the Giants": [
         "Horizon Puzzle Cube"
-      ],
-      "Candlekeep Mysteries": [
+    ],
+    "Candlekeep Mysteries": [
         "Orcus Figurine",
         "Radiance",
         "Stonky’s ring"
-      ],
-      "Curse of Strahd": [
+    ],
+    "Curse of Strahd": [
         "Yester Hill Axe"
-      ],
-      "Divine Contention": [
+    ],
+    "Divine Contention": [
         "Gnomengarde Grenade"
-      ],
-      "Icewind Dale: Rime of the Frostmaiden": [
+    ],
+    "Icewind Dale: Rime of the Frostmaiden": [
         "The Codicil of White"
-      ],
-      "Monstrous Compendium Volume 3: Minecraft Creatures": [
+    ],
+    "Monstrous Compendium Volume 3: Minecraft Creatures": [
         "End Crystal",
         "Ender Pearl"
-      ],
-      "Phandelver and Below: The Shattered Obelisk": [
+    ],
+    "Phandelver and Below: The Shattered Obelisk": [
         "Statuette of Augury"
-      ],
-      "Tryanny of Dragons": [
+    ],
+    "Tryanny of Dragons": [
         "Dragongleam"
-      ],
-      "Wayfinder's Guide to Eberron": [
+    ],
+    "Wayfinder's Guide to Eberron": [
         "Revenant Double-Bladed Scimitar"
-      ]
-    }
-  }
+    ]
 }

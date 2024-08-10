@@ -1,3 +1,5 @@
+import * as DefaultSettingsUtils from "src/shared/utilities/default-settings-utils";
+
 export class NPCRaceSettings {
     raceName: string;
     masculineFirst: string[];
@@ -13,18 +15,13 @@ export class NPCRaceSettings {
             this.neutralFirst = [];
             this.family = [];
         } else if(defaultSettings) {
-            this.masculineFirst = this.DEFAULT_MASCULINE_FIRST;
-            this.feminineFirst = this.DEFAULT_FEMININE_FIRST;
-            this.neutralFirst = this.DEFAULT_NEUTRAL_FIRST;
-            this.family = this.DEFAULT_FAMILY;
+            const defaultNPCSettings = DefaultSettingsUtils.generateDefaultNPCNameSettings(raceName);
+            this.masculineFirst = defaultNPCSettings.masculineFirst;
+            this.feminineFirst = defaultNPCSettings.feminineFirst;
+            this.neutralFirst = defaultNPCSettings.neutralFirst;
+            this.family = defaultNPCSettings.family;
         }
     }
-
-
-    private DEFAULT_MASCULINE_FIRST = ["Tom!", "Jerry!"];
-    private DEFAULT_FEMININE_FIRST = ["Jane!"];
-    private DEFAULT_NEUTRAL_FIRST = ["Neutral Tom!"];
-    private DEFAULT_FAMILY = ["Smith!"];
 }
 
 
