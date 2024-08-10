@@ -1,5 +1,6 @@
 import { ButtonComponent } from "obsidian";
-import { BaseGeneratorService } from "../service/base-generation-service";
+import { BaseGeneratorService } from "./base-generation-service";
+import FantasyPlugin from "main";
 
 export class BaseGeneratorComponent {
 
@@ -12,10 +13,13 @@ export class BaseGeneratorComponent {
 
     centered = true;
 
-    constructor(parentDiv: HTMLElement, generatorService: BaseGeneratorService, generateClickSettings?: any) {
+    plugin: FantasyPlugin;
+
+    constructor(plugin: FantasyPlugin, parentDiv: HTMLElement, generatorService: BaseGeneratorService, generateClickSettings?: any) {
         this.parentDiv = parentDiv;
         this.generateClickSettings = generateClickSettings;
         this.generatorService = generatorService;
+        this.plugin = plugin;
         this.createActionsSection();
     }
 
@@ -63,7 +67,7 @@ export class BaseGeneratorComponent {
         if(this.generatorService && !this.generatorService.GENERATE_NOTE_HIDDEN) {
             const createPageButton = new ButtonComponent(createPageButtonDiv);
             createPageButton.setButtonText("Save to Files").setCta().onClick(() => {
-                this.generatorService.generateNote(this.currentItem);
+                this.generatorService.generateNote(this.plugin.settings.saveToFileLocation, this.currentItem);
             });
             createPageButtonDiv.hidden = true;
         }

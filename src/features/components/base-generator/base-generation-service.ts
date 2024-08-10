@@ -13,7 +13,7 @@ export class BaseGeneratorService {
   }
 
 
-  generateNote(item: any) {
+  generateNote(fileLocation: string, item: any) {
     // Do Nothing
   }
 }

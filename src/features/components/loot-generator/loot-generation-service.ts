@@ -1,7 +1,7 @@
 import { Loot } from "../../../types/loot/Loot";
 import { BaseGeneratorService } from "src/features/components/base-generator/base-generation-service";
-import * as fs from "fs";
 import { LootGeneratorSettings } from "../../../types/loot/LootGeneratorSettings";
+import * as FileUtils from '../../../shared/utilities/file-utils';
 
 export class LootGeneratorService extends BaseGeneratorService {
     GENERATE_NOTE_HIDDEN = true;
@@ -20,23 +20,19 @@ export class LootGeneratorService extends BaseGeneratorService {
 
         return retVal;
     }
-    generateLootNoteSheet(loot: Loot) {
+    generateLootNoteSheet(fileLocation: string, loot: Loot) {
         const currentdate = new Date(); 
         const datetime = '' + currentdate.getFullYear() + (currentdate.getMonth()+1) + currentdate.getDate() + currentdate.getHours() + currentdate.getMinutes() + currentdate.getSeconds();
 
-        const generatedNpcFolder = "C:\\Users\\bernh\\iCloudDrive\\iCloud~md~obsidian\\Campaign Notes\\z_Generated\\Loot\\Loot_" + datetime + ".md";
+        const generatedLootFolder = fileLocation + "\\Loot";
+        const fileName = "Loot_" + datetime + ".md";
         
-        const overviewContent = '## Overview\r\n\r\n**GP**: !GP_AMOUNT\r\n!ITEM_LIST\r\n\r\n\r\n';
+        const overviewContent = '## Overview\r\n\r\n**Additional GP**: !GP_AMOUNT\r\n!ITEM_LIST\r\n\r\n\r\n';
     
-        const fullContent = overviewContent.replace("!GP_AMOUNT", '' + loot.getMapping()['Remaining GP']).replace("!ITEM_LIST", loot.getListAsString("\r\n", true))
-    
-        fs.writeFile(generatedNpcFolder, fullContent, err => {
-          if (err) {
-            console.error(err);
-          } else {
-            // file written successfully
-          }
-        });
+        const fullContent = overviewContent.replace("!GP_AMOUNT", '' + loot.getMapping()['Remaining GP']).replace("!ITEM_LIST", loot.getListAsString("\r\n", true));
+
+        
+        FileUtils.saveDataToFile(generatedLootFolder, fileName, fullContent);
     }
 
     private fillItemMapping(lootMap: Loot, lootSettings: LootGeneratorSettings) {

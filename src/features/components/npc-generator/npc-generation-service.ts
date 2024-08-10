@@ -1,8 +1,8 @@
 import { NPC } from "src/types/npc/NPC";
-import * as fs from "fs";
 import { NPCGeneratorSettings } from "../../../types/npc/NPCGeneratorSettings";
 import { NPCRaceSettings } from "../../../types/npc/NPCRaceSettings";
 import FantasyPlugin from "main";
+import * as FileUtils from '../../../shared/utilities/file-utils';
 
 export const genderKeyList = ["Male", "Female"];
 export const genderValueList = ["Masculine First", "Feminine First", "Neutral First", "Family"];
@@ -192,10 +192,9 @@ export function fillMaps(openMap: Map<string, Map<string, string[]>>, deletedMap
     createRaceMapFromSettings(deletedMap, usedNpcGeneratorSettings.goblin, excludingName);
 }
 
-export function generateCharacterNoteSheet(npc: NPC) {
-
-
-    const generatedNpcFolder = "C:\\Users\\bernh\\iCloudDrive\\iCloud~md~obsidian\\Campaign Notes\\z_Generated\\NPCs\\" + npc.firstName + " " + npc.familyName + ".md";
+export function generateCharacterNoteSheet(fileLocation: string, npc: NPC) {
+    const generatedNpcFolder = fileLocation + "\\NPCs"
+    const fileName = npc.firstName + " " + npc.familyName + ".md";
     
     const overviewContent = '## Overview\r\n\r\n**Race**: !RACE\r\n\r\n**Gender**: !GENDER\r\n\r\n**Age**: \r\n\r\n**Alignment**: \r\n\r\n**Character Role**: \r\n\r\n**Current Location**: \r\n\r\n**Condition**: Alive\r\n\r\n\r\n';
     const profileContent = "## Profile\r\n\r\n**Appearance**: \r\n\r\n**Social Traits/Archetype**: !SOCIAL_TRAITS\r\n\r\n**Philosophies**: \r\n\r\n\r\n";
@@ -208,11 +207,5 @@ export function generateCharacterNoteSheet(npc: NPC) {
     fullContent = fullContent.replace("!RACE", npc.race ? npc.race : "placeholder_race").replace("!GENDER", npc.gender ? npc.gender : "placeholder_gender").replace("!SOCIAL_TRAITS", npc.funFact ? npc.funFact : "placeholder_fun_fact");
 
 
-    fs.writeFile(generatedNpcFolder, fullContent, err => {
-      if (err) {
-        console.error(err);
-      } else {
-        // file written successfully
-      }
-    });
+    FileUtils.saveDataToFile(generatedNpcFolder, fileName, fullContent);
 }

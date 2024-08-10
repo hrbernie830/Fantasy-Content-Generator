@@ -1,4 +1,4 @@
-import { ITEM_LIST } from "src/shared/default-settings/DefaultSetting";
+import { generateDefaultItemList } from "src/types/loot/DefaultItemList";
 
 export class LootGeneratorSettings {
     itemList: any;
@@ -8,8 +8,8 @@ export class LootGeneratorSettings {
     constructor(defaultSettings?: boolean) {
         if(defaultSettings) {
             this.excludedSources = [];
-            LootGeneratorSettings.setItemList(this, ITEM_LIST);
-        }
+            LootGeneratorSettings.setItemList(this, generateDefaultItemList());
+        }``
     }
 
     static setItemList(settings: LootGeneratorSettings, itemList: any) {
@@ -34,6 +34,7 @@ export class LootGeneratorSettings {
             }
         }
     }
+    
 }
 
 export{}

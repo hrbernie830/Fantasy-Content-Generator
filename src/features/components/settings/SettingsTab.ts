@@ -1,14 +1,19 @@
 import FantasyPlugin from "main";
-import { PluginSettingTab, App, Setting, Platform } from "obsidian";
-import { exportJSON, importJSON } from "../../../shared/utilities/shared-utils";
-import { FileWithPath } from "src/types/settings/FileWithPath";
-import { DEFAULT_SETTINGS } from "../../../shared/default-settings/DefaultSetting";
+import { PluginSettingTab, App, Setting } from "obsidian";
+import * as FileUtils from '../../../shared/utilities/file-utils';
+import * as SharedUtils from '../../../shared/utilities/shared-utils';
 import { InnGeneratorSettings } from "src/types/inn/InnGeneratorSettings";
 import { DrinkGeneratorSettings } from "src/types/drink/DrinkGeneratorSettings";
 import { LootGeneratorSettings } from "src/types/loot/LootGeneratorSettings";
 import { NPCRaceSettings } from "src/types/npc/NPCRaceSettings";
 import { NPCGeneratorSettings } from "src/types/npc/NPCGeneratorSettings";
-import { ITEM_LIST } from "../../../shared/default-settings/DefaultSetting";
+import { SettingsTable } from "src/shared/settings-table/settings-table";
+import { Action } from "src/types/settings/Action";
+import { SettingTextEntry } from "src/shared/setting-text-entry/setting-text-entry";
+import { SettingGenericTable } from "src/shared/setting-generic-table/setting-generic-table";
+import { ExpandableDiv } from "src/shared/expandable-div/expandable-div";
+import { ImportExportOption } from "src/shared/import-export-option/import-export-option";
+import { FantasyPluginSettings } from "src/types/settings/FantasyPluginSettings";
 
 export class SettingsTab extends PluginSettingTab {
     plugin: FantasyPlugin;
@@ -23,168 +28,37 @@ export class SettingsTab extends PluginSettingTab {
         this.plugin = plugin;
     }
 
-    convertStringToArray(string: string, arr: string[]): void {
-        //const newString = string.replace(/\s/g, '');
-        const array = string.split(',');
-        array.forEach((el) => {
-            arr.push(el);
-        })
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    createSettingsBlock(hasGenericTable: boolean, containerEl: HTMLElement, textA: string, arr: any[], type: string, weights: boolean): void {
-        new Setting(containerEl).setName(type + " being used").setDesc("Click 'remove' for any item you want removed from the Array");
-        this.createTableBlock(hasGenericTable, containerEl, arr, weights, undefined, textA, type);
-        
-    }
-
-    createTableBlock(genericTable: boolean, containerEl: HTMLElement, arr: any[], weights: boolean, usedArr?: any[], placeholderText?: string,  tableHeader?: string) {
-        let preText = placeholderText ? placeholderText : '';
-        const newAdditionSetting = new Setting(containerEl)
-        .setName("New Addition:")
-        .addTextArea((text) => {
-            text.onChange((value) => {
-                preText = value;
-            })
-        });
-
-        const tableDiv = containerEl.createDiv();
-        if(genericTable) {
-            this.createGenericArrTable(tableDiv, arr, weights, tableHeader);
-        } else {
-            this.createTableDiv(tableDiv, arr, weights, usedArr);
-        }
-
-        newAdditionSetting.addButton((btn) => {
-            btn.setCta().setButtonText("Add")
-                .onClick(async () => {
-                    this.convertStringToArray(preText, arr);
-                    if(genericTable) {
-                        this.createGenericArrTable(tableDiv, arr, weights, tableHeader);
-                    } else {
-                        this.createTableDiv(tableDiv, arr, weights, usedArr);
-                    }
-                    
-                    await this.plugin.saveSettings();
-                })
-        })
-
-        containerEl.createEl('hr');
-    }
-
-    createTableDiv(containerEl: HTMLElement, arr: any[], weights: boolean, usedArr?: any[]) {
-        containerEl.innerHTML = '';
-        const tableDiv = containerEl.createDiv();
-        this.createUnusedArrTable(containerEl, tableDiv, arr, weights, usedArr);
-        this.createUsedArrTable(containerEl, tableDiv, arr, weights, usedArr);
-    }
-
-    createGenericArrTable(containerEl: HTMLElement, arr: any[], weights: boolean, textA?: string, removeCallbackFn?: any) {
-        containerEl.innerHTML = '';
-        const genericFoldDiv = containerEl.createEl('details', { cls: "OFCGDetails" });
-        const tableHeaderText = textA ? textA + ' Included in Generator' : 'Options Included in Generator';
-        genericFoldDiv.createEl("summary", { text: tableHeaderText, cls: "OFCGSummary" });
-        genericFoldDiv.setAttribute('open', '');
-        for (let index = 0; index < arr.length; index++) {
-            new Setting(genericFoldDiv)
-                .setName(weights ? JSON.stringify(arr[index]) : arr[index])
-                .addButton((btn) => btn
-                    .setCta()
-                    .setButtonText("Remove")
-                    .onClick(async () => {
-                        if(!removeCallbackFn) {
-                            arr.splice(index, 1);
-                            this.createTableDiv(containerEl, arr, weights);
-                            await this.plugin.saveSettings();
-                        } else {
-                            removeCallbackFn(arr[index]);
-                        }
-                        
-                    })
-                )
-        }
-    }
-
-    createUsedArrTable(parentEl: HTMLElement, containerEl: HTMLElement, arr: any[], weights: boolean, usedArr?: any[]) {
-        if(usedArr) {
-            const usedFoldDiv = containerEl.createEl('details', { cls: "OFCGDetails" });
-            usedFoldDiv.createEl("summary", { text: 'Used Options Not Included in Generator', cls: "OFCGSummary" });
-            usedFoldDiv.setAttribute('open', '');
-            for (let index = 0; index < usedArr.length; index++) {
-                new Setting(usedFoldDiv)
-                    .setName(weights ? JSON.stringify(usedArr[index]) : usedArr[index])
-                    .addButton((btn) => btn
-                        .setCta()
-                        .setButtonText("Mark as Unused")
-                        .onClick(async () => {
-                            arr.push(usedArr.splice(index, 1)[0]);
-                            this.createTableDiv(parentEl, arr, weights, usedArr);
-                            await this.plugin.saveSettings();
-                        })
-                    )
-                    .addButton((btn) => btn
-                        .setCta()
-                        .setButtonText("Remove")
-                        .onClick(async () => {
-                            usedArr.splice(index, 1);
-                            this.createTableDiv(parentEl, arr, weights, usedArr);
-                            await this.plugin.saveSettings();
-                        })
-                    )
-            }
-        }
-    }
-
-    createUnusedArrTable(parentEl: HTMLElement, containerEl: HTMLElement, arr: any[], weights: boolean, usedArr?: any[]) {
-        const foldDiv = containerEl.createEl('details', { cls: "OFCGDetails" });
-        const prefix = usedArr ? 'Unused ' : '';
-        foldDiv.createEl("summary", { text: prefix + 'Options Included in Generator', cls: "OFCGSummary" });
-        foldDiv.setAttribute('open', '');
-        for (let index = 0; index < arr.length; index++) {
-            const foldDivSetting = new Setting(foldDiv)
-                .setName(weights ? JSON.stringify(arr[index]) : arr[index]);
-            if(usedArr) {
-                foldDivSetting.addButton((btn) => btn
-                        .setCta()
-                        .setButtonText("Mark as Used")
-                        .onClick(async () => {
-                            usedArr.push(arr.splice(index, 1)[0]);
-                            this.createTableDiv(parentEl, arr, weights, usedArr);
-                            await this.plugin.saveSettings();
-                        })
-                    )
-            }
-                
-            foldDivSetting.addButton((btn) => btn
-                    .setCta()
-                    .setButtonText("Remove")
-                    .onClick(async () => {
-                        arr.splice(index, 1);
-                        containerEl.removeChild(foldDiv);
-                        this.createTableDiv(parentEl, arr, weights, usedArr);
-                        await this.plugin.saveSettings();
-                    })
-                )
-        }
-    }
-
     display(): void {
         const { containerEl } = this;
 
         containerEl.empty();
 
         containerEl.createEl('h1', { text: 'Fantasy Content Generator',  });
-        const generalSettings = containerEl.createDiv("general")
+        const generalSettings = containerEl.createDiv("general");
+
+        const importFn = async (data: FantasyPluginSettings) => {
+            this.plugin.settings = data;
+            await this.plugin.saveSettings();
+            this.display();
+        }
+        const exportFn = () => {FileUtils.exportJSON(this.plugin.settings)};
+        new ImportExportOption(generalSettings, importFn, exportFn).generate();
+
+
+        let preText = '';
         new Setting(generalSettings)
-            .setName('Reset To Defaults')
-            .setDesc('Click if you would like to use the default settings again')
-            .addButton((btn) => {
-                btn.setCta()
-                    .setButtonText("Reset")
+            .setName("'Save to Files' Folder")
+            .setDesc("The file location where you want the 'Save to Files' buttons on some generators to create the note. Under this file specific folders will be created including 'Inns', 'Loot' and 'NPCs'")
+            .addText((text) => {
+                text.setValue(this.plugin.settings.saveToFileLocation)
+                text.onChange((value) => {
+                    preText = value;
+                })
+            }).addButton((btn) => {
+                btn.setCta().setButtonText("Save")
                     .onClick(async () => {
-                        this.plugin.settings = DEFAULT_SETTINGS;
-                        this.display();
-                        await this.plugin.saveSettings();
+                        this.plugin.settings.saveToFileLocation = preText;
+                        this.plugin.saveSettings();
                     })
             });
 
@@ -207,42 +81,34 @@ export class SettingsTab extends PluginSettingTab {
             style: "padding-left: 15px;"
         }});
         this.generateLootSettingsBlock(this.lootDiv);
-    }
 
-    createTapToExpandDiv(parentDiv: HTMLElement, settingName: string, startExpanded?: boolean, headerKind?: string): HTMLElement {
-        const outerDiv = parentDiv.createDiv({
-            attr: {
-                style: "padding-top: 10px;"
-            }
+        new Setting(this.containerEl.createDiv({attr: {
+            style: "padding-top: 15px;"
+        }}))
+        .setName('Reset All Settings To Defaults')
+        .setDesc('Click if you would like to use the default settings again')
+        .addButton((btn) => {
+            btn.setCta()
+                .setButtonText("Reset")
+                .onClick(async () => {
+                    this.plugin.settings = SharedUtils.generateDefaultSettings();
+                    await this.plugin.saveSettings();
+                    this.display();
+                })
         });
-        const header = outerDiv.createEl(headerKind === "h1" ? "h1" : (headerKind === "h2" ? "h2" : (headerKind === "h3" ? "h3" : (headerKind === "h4" ? "h4" : "h5"))), { text: settingName + " (tap to expand)" });
-
-        const expandedDiv = outerDiv.createDiv();
-
-        header.onclick = function() {
-            if(header.innerHTML.contains("expand")) {
-                header.innerHTML = settingName + " (tap to collapse)";
-                expandedDiv.hidden = false;
-            } else {
-                header.innerHTML = settingName + " (tap to expand)";
-                expandedDiv.hidden = true;
-            }
-        };
-
-        if(startExpanded) {
-            header.click();
-        } else {
-            expandedDiv.hidden = true;
-        }
-
-        return expandedDiv;
     }
 
     generateLootSettingsBlock(lootDiv: HTMLElement, startExpanded?: boolean) {
         this.lootDiv.innerHTML = '';
-        const lootSettingsExpandedDiv = this.createTapToExpandDiv(lootDiv, "Loot Settings", startExpanded, "h3");
+        const lootSettingsExpandedDiv = new ExpandableDiv(lootDiv, "Loot Settings", "h3").generate(startExpanded);
 
-        this.generateLootImportExportOption(lootSettingsExpandedDiv);
+        const importFn = async (data: any) => {
+            LootGeneratorSettings.setItemList(this.plugin.settings.lootSettings, data)
+            this.generateLootSettingsBlock(this.lootDiv, true);
+            await this.plugin.saveSettings();
+        }
+        const exportFn = () => {FileUtils.exportJSON(this.plugin.settings.lootSettings)};
+        new ImportExportOption(lootSettingsExpandedDiv, importFn, exportFn).generate();
 
         const lootSettings: LootGeneratorSettings = this.plugin.settings.lootSettings;
 
@@ -252,54 +118,77 @@ export class SettingsTab extends PluginSettingTab {
 
         const includedListDiv = lootSettingsExpandedDiv.createDiv();
         const excludedListDiv = lootSettingsExpandedDiv.createDiv();
+        
 
-        this.createGenericArrTable(includedListDiv, includedSourceList, false, "Sources", (async (item: string) => {
-            // removing from the incliuded source list
-            console.log(item);
+        const removeAction: Action = {text: 'Remove', action: (async (item: string, arr: string[]) => {
             this.plugin.settings.lootSettings.excludedSources.push(item);
             await this.plugin.saveSettings();
             this.generateLootSettingsBlock(lootDiv, true)
-        }));
-        this.createGenericArrTable(excludedListDiv, excludedSourceList, false, "Sources Not", (async (item: string) => {
-            // removing from the excliuded source list
+        })};
+
+        const reIncludeAction: Action = {text: 'Re-Include', action: (async (item: string, arr: string[]) => {
             this.plugin.settings.lootSettings.excludedSources.remove(item);
             await this.plugin.saveSettings();
             this.generateLootSettingsBlock(lootDiv, true)
-        }));
+        })};
+
+        new SettingsTable(this.plugin, includedListDiv, includedSourceList, "Sources Included", [removeAction]).generate();
+        new SettingsTable(this.plugin, excludedListDiv, excludedSourceList, "Sources Not Included", [reIncludeAction]).generate();
+
     }
 
     generateDrinkSettingsBlock(drinkDiv: HTMLElement, startExpanded?: boolean) {
-        const drinkSettingsExpandedDiv = this.createTapToExpandDiv(drinkDiv, "Drink Settings", startExpanded, "h3");
+        const drinkSettingsExpandedDiv = new ExpandableDiv(drinkDiv, "Drink Settings", "h3").generate(startExpanded);
 
-        const drinkNounText = "";
-        const drinkAdjText = "";
+        const importFn = async (data: any) => {
+            this.plugin.settings.drinkSettings = data as DrinkGeneratorSettings;
+            this.generateDrinkSettingsBlock(this.drinkDiv, true);
+            await this.plugin.saveSettings();
+        }
+        const exportFn = () => {FileUtils.exportJSON(this.plugin.settings.drinkSettings)};
+        new ImportExportOption(drinkSettingsExpandedDiv, importFn, exportFn).generate();
 
-        this.generateDrinkImportExportOption(drinkSettingsExpandedDiv);
-        this.createSettingsBlock(true, drinkSettingsExpandedDiv, drinkAdjText, this.plugin.settings.drinkSettings.adj, "Adjectives", false);
-        this.createSettingsBlock(true, drinkSettingsExpandedDiv, drinkNounText, this.plugin.settings.drinkSettings.nouns, "Nouns", false);
+        new SettingGenericTable(this.plugin, drinkSettingsExpandedDiv.createDiv(), "Adjectives being used", "Click 'remove' for any item you want removed from the Array", this.plugin.settings.drinkSettings.adj).generate();
+        new SettingGenericTable(this.plugin, drinkSettingsExpandedDiv.createDiv(), "Nouns being used", "Click 'remove' for any item you want removed from the Array", this.plugin.settings.drinkSettings.nouns).generate();
     }
 
     generateInnSettingsBlock(innDiv: HTMLElement, startExpanded?: boolean) {
-        const innSettingsExpandedDiv = this.createTapToExpandDiv(innDiv, "Inn Settings", startExpanded, "h3");
+        const innSettingsExpandedDiv = new ExpandableDiv(innDiv, "Inn Settings", "h3").generate(startExpanded);
 
-        const innPreText = "";
-        const innTypeText = "";
-        const innNounText = "";
-        const innDescText = "";
-        const innRumorText = "";
+        const importFn = async (data: any) => {
+            this.plugin.settings.innSettings = data as InnGeneratorSettings;
+            this.generateInnSettingsBlock(this.innDiv, true);
+            await this.plugin.saveSettings();
+        }
+        const exportFn = () => {FileUtils.exportJSON(this.plugin.settings.innSettings)};
+        new ImportExportOption(innSettingsExpandedDiv, importFn, exportFn).generate();
 
-        this.generateInnImportExportOption(innSettingsExpandedDiv);
-        this.createSettingsBlock(true, innSettingsExpandedDiv, innPreText, this.plugin.settings.innSettings.prefixes, "Prefixes", false);
-        this.createSettingsBlock(true, innSettingsExpandedDiv, innTypeText, this.plugin.settings.innSettings.innType, "Types", false);
-        this.createSettingsBlock(true, innSettingsExpandedDiv, innNounText, this.plugin.settings.innSettings.nouns, "Nouns", false);
-        this.createSettingsBlock(true, innSettingsExpandedDiv, innDescText, this.plugin.settings.innSettings.desc, "Descriptions", false);
-        this.createSettingsBlock(true, innSettingsExpandedDiv, innRumorText, this.plugin.settings.innSettings.rumors, "Rumors", false);
+        new SettingGenericTable(this.plugin, innSettingsExpandedDiv.createDiv(), "Prefixes being used", "Click 'remove' for any item you want removed from the Array", this.plugin.settings.innSettings.prefixes).generate();
+        new SettingGenericTable(this.plugin, innSettingsExpandedDiv.createDiv(), "Types being used", "Click 'remove' for any item you want removed from the Array", this.plugin.settings.innSettings.innType).generate();
+        new SettingGenericTable(this.plugin, innSettingsExpandedDiv.createDiv(), "Nouns being used", "Click 'remove' for any item you want removed from the Array", this.plugin.settings.innSettings.nouns).generate();
+        new SettingGenericTable(this.plugin, innSettingsExpandedDiv.createDiv(), "Descriptions being used", "Click 'remove' for any item you want removed from the Array", this.plugin.settings.innSettings.desc).generate();
+        new SettingGenericTable(this.plugin, innSettingsExpandedDiv.createDiv(), "Rumors being used", "Click 'remove' for any item you want removed from the Array", this.plugin.settings.innSettings.rumors).generate();
     }
 
     generateNpcSettingsBlock(npcDiv: HTMLElement, startExpanded?: boolean) {
-        const npcSettingsExpandedDiv = this.createTapToExpandDiv(npcDiv, "NPC Settings", startExpanded, "h3");
+        const npcSettingsExpandedDiv = new ExpandableDiv(npcDiv, "NPC Settings", "h3").generate(startExpanded);
+
+        const importFn = async (data: {'Used': NPCGeneratorSettings, 'Unused': NPCGeneratorSettings}) => {
+            const usedData = data['Used'] as NPCGeneratorSettings;
+            const unusedData = data['Unused'] as NPCGeneratorSettings;
+            
+            if(data && usedData && unusedData) {
+                this.plugin.settings.usedNpcSettings = usedData;
+                this.plugin.settings.npcSettings = unusedData;
+                await this.plugin.saveSettings();
+            }
+            
+            this.npcDiv.innerHTML = '';
+            this.generateNpcSettingsBlock(this.npcDiv, true);
+        }
+        const exportFn = () => {FileUtils.exportJSON({ 'Used': this.plugin.settings.usedNpcSettings, 'Unused': this.plugin.settings.npcSettings })};
+        new ImportExportOption(npcSettingsExpandedDiv, importFn, exportFn).generate();
         
-        this.generateNPCImportExportOption(npcSettingsExpandedDiv);
         this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.human, this.plugin.settings.usedNpcSettings.human);
         this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.elf, this.plugin.settings.usedNpcSettings.elf);
         this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.dwarf, this.plugin.settings.usedNpcSettings.dwarf);
@@ -308,6 +197,7 @@ export class SettingsTab extends PluginSettingTab {
         this.generateNPCFunFactSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings, this.plugin.settings.usedNpcSettings);
     }
 
+
     generateNPCFunFactSettingsBlock(containerDiv: HTMLElement, settingBlock: NPCGeneratorSettings, usedSettingsBlock: NPCGeneratorSettings) {
         const funFactDiv = containerDiv.createDiv({
             attr: {
@@ -315,9 +205,9 @@ export class SettingsTab extends PluginSettingTab {
             }
         });
 
-        const funFactSettingsExpandedDiv = this.createTapToExpandDiv(funFactDiv, "Fun Fact Settings", false, "h4");
+        const funFactSettingsExpandedDiv = new ExpandableDiv(funFactDiv, "Fun Fact Settings", "h4").generate(false);
 
-        this.createSettingsTableSection(funFactSettingsExpandedDiv, settingBlock.funFactList, "Personality/Archetypes", usedSettingsBlock.funFactList);
+        this.createSettingsBlockForNPCFeature(funFactSettingsExpandedDiv, settingBlock.funFactList, "Personality/Archetypes", usedSettingsBlock.funFactList);
     }
 
     generateNPCRaceSettingsBlock(containerDiv: HTMLElement, settingBlock: NPCRaceSettings, usedSettingsBlock: NPCRaceSettings) {
@@ -327,223 +217,74 @@ export class SettingsTab extends PluginSettingTab {
             }
         });
 
-        const raceSettingsExpandedDiv = this.createTapToExpandDiv(raceDiv, settingBlock.raceName + " Race Settings", false, "h4");
+        const raceSettingsExpandedDiv = new ExpandableDiv(raceDiv, settingBlock.raceName + " Race Settings", "h4").generate(false);
 
-        this.createSettingsTableSection(raceSettingsExpandedDiv, settingBlock.masculineFirst, "Masculine First Names", usedSettingsBlock.masculineFirst);
-        this.createSettingsTableSection(raceSettingsExpandedDiv, settingBlock.feminineFirst, "Feminine First Names", usedSettingsBlock.feminineFirst);
-        this.createSettingsTableSection(raceSettingsExpandedDiv, settingBlock.neutralFirst, "Neutral First Names", usedSettingsBlock.neutralFirst);
-        this.createSettingsTableSection(raceSettingsExpandedDiv, settingBlock.family, "Family/Last Names", usedSettingsBlock.family);
+        this.createSettingsBlockForNPCFeature(raceSettingsExpandedDiv, settingBlock.masculineFirst, "Masculine First Names", usedSettingsBlock.masculineFirst);
+        this.createSettingsBlockForNPCFeature(raceSettingsExpandedDiv, settingBlock.feminineFirst, "Feminine First Names", usedSettingsBlock.feminineFirst);
+        this.createSettingsBlockForNPCFeature(raceSettingsExpandedDiv, settingBlock.neutralFirst, "Neutral First Names", usedSettingsBlock.neutralFirst);
+        this.createSettingsBlockForNPCFeature(raceSettingsExpandedDiv, settingBlock.family, "Family/Last Names", usedSettingsBlock.family);
     }
 
-    createSettingsTableSection(overallRaceDiv: HTMLElement, stringList: string[], tableHeader: string, usedList?: any[]) {
+    createSettingsBlockForNPCFeature(overallRaceDiv: HTMLElement, stringList: string[], tableHeader: string, usedList: any[]) {
         const tableHeaderDiv = overallRaceDiv.createDiv({
             attr: {
                 style: "padding-left: 20px; padding-top: 5px;"
             }
         })
-        const tableHeaderEl = tableHeaderDiv.createEl("h5", { text: tableHeader + " (tap to expand)" });
 
+        const tableSectionDiv = new ExpandableDiv(tableHeaderDiv, tableHeader, "h5").generate(false);
 
-        const tableSectionDiv = tableHeaderDiv.createDiv();
-
-        tableHeaderEl.onclick = function() {
-            if(tableHeaderEl.innerHTML.contains("expand")) {
-                tableHeaderEl.innerHTML = tableHeader + " (tap to collapse)";
-                tableSectionDiv.hidden = false;
-            } else {
-                tableHeaderEl.innerHTML = tableHeader + " (tap to expand)";
-                tableSectionDiv.hidden = true;
-            }
-        };
-
+        this.generateNPCNameTables(tableSectionDiv.createDiv(), stringList, usedList)
         
-        this.createTableBlock(false, tableSectionDiv, stringList, false, usedList);
         tableSectionDiv.hidden = true;
     }
 
+    generateNPCNameTables(containerEl: HTMLElement, unusedList: any[], usedList: any[]) {
+        containerEl.innerHTML = '';
+        const tableDiv = containerEl.createDiv();
+ 
+        const addNewNameFn = (async (item: string) => {
+            this.updateNPCNameTables(containerEl, item, unusedList, usedList, 'ADD_TO_UNUSED');
+        });
+        const markAsUsedFn = (async (item: string, itemArr: string[]) => {
+            this.updateNPCNameTables(containerEl, item, unusedList, usedList, 'SHIFT_TO_USED');
+        });
+        const markAsUnusedFn = (async (item: string, itemArr: string[]) => {
+            this.updateNPCNameTables(containerEl, item, unusedList, usedList, 'SHIFT_TO_UNUSED');
+        });
+        const removeFromUnusedFn = (async (item: string, itemArr: string[]) => {
+            this.updateNPCNameTables(containerEl, item, unusedList, usedList, 'REMOVE_FROM_UNUSED');
+        });
+        const removeFromUsedFn = (async (item: string, itemArr: string[]) => {
+            this.updateNPCNameTables(containerEl, item, unusedList, usedList, 'REMOVE_FROM_USED');
+        });
 
-    private generateLootImportExportOption(lootDiv: HTMLElement) {
-        if (Platform.isDesktopApp) {
-            const importExportFile = new Setting(lootDiv)
-                .setName("Import | Export")
-                .setDesc("Import A Json File With Supported information");
+        new SettingTextEntry(tableDiv.createDiv()).generate(addNewNameFn);
+        const markAsUsedAction: Action = {text: 'Mark as Used', action: markAsUsedFn};
+        const removeFromUnusedAction: Action = {text: 'Remove', action: removeFromUnusedFn};
+        new SettingsTable(this.plugin, tableDiv.createDiv(), unusedList, "Unsed Options Included in Generator", [markAsUsedAction, removeFromUnusedAction]).generate();
 
-            const inputAppfile = createEl("input", {
-                attr: {
-                    type: "file",
-                    name: "loot",
-                    accept: ".json",
-                    multiple: false
-                }
-            });
-
-            inputAppfile.onchange = async () => {
-                const { files } = inputAppfile;
-                if (files === null || !files.length) return;
-                try {
-                    const file = files[0] as FileWithPath;
-                    importJSON(file.path, async (data) => {
-                        LootGeneratorSettings.setItemList(this.plugin.settings.lootSettings, data)
-                        this.generateLootSettingsBlock(this.lootDiv, true);
-                        await this.plugin.saveSettings();
-                    });
-
-                } catch (e) { /* empty */ }
-            }
-
-            importExportFile.addButton((b) => {
-                b.setButtonText("Choose Import File").setTooltip(
-                    "Import Json File for the Generator"
-                ).buttonEl.appendChild(inputAppfile)
-                b.buttonEl.addClass("FCGInput");
-                b.onClick(() => inputAppfile.click());
-            }).addButton((b) => {
-                b.setButtonText("Export Section To File").setCta()
-                    .onClick(() => {
-                        exportJSON(ITEM_LIST);
-                    })
-            });
-        }
+        const markAsUnusedAction: Action = {text: 'Mark as Unused', action: markAsUnusedFn};
+        const removeFromUsedAction: Action = {text: 'Remove', action: removeFromUsedFn};
+        new SettingsTable(this.plugin, tableDiv.createDiv(), usedList, "Used Options Not Included in Generator", [markAsUnusedAction, removeFromUsedAction]).generate();
     }
 
-    private generateDrinkImportExportOption(drinkDiv: HTMLElement) {
-        if (Platform.isDesktopApp) {
-            const importExportFile = new Setting(drinkDiv)
-                .setName("Import | Export")
-                .setDesc("Import A Json File With Supported information");
-
-            const inputAppfile = createEl("input", {
-                attr: {
-                    type: "file",
-                    name: "drink",
-                    accept: ".json",
-                    multiple: false
-                }
-            });
-
-            inputAppfile.onchange = async () => {
-                const { files } = inputAppfile;
-                if (files === null || !files.length) return;
-                try {
-                    const file = files[0] as FileWithPath;
-                    importJSON(file.path, async (data) => {
-                        this.plugin.settings.drinkSettings = data as DrinkGeneratorSettings;
-                        this.generateDrinkSettingsBlock(this.drinkDiv, true);
-                        await this.plugin.saveSettings();
-                    });
-
-                } catch (e) { /* empty */ }
-            }
-
-            importExportFile.addButton((b) => {
-                b.setButtonText("Choose Import File").setTooltip(
-                    "Import Json File for the Generator"
-                ).buttonEl.appendChild(inputAppfile)
-                b.buttonEl.addClass("FCGInput");
-                b.onClick(() => inputAppfile.click());
-            }).addButton((b) => {
-                b.setButtonText("Export Section To File").setCta()
-                    .onClick(() => {
-                        exportJSON(this.plugin.settings.drinkSettings);
-                    })
-            });
+    async updateNPCNameTables(containerEl: HTMLElement, item: string, unusedArr: string[], usedArr: string[], action: string) {
+        if(action === 'ADD_TO_UNUSED') {
+            unusedArr.push(item);
+        } else if(action === 'SHIFT_TO_USED') {
+            usedArr.push(item);
+            unusedArr.remove(item);
+        } else if(action === 'SHIFT_TO_UNUSED') {
+            usedArr.remove(item);
+            unusedArr.push(item);
+        } else if(action === 'REMOVE_FROM_UNUSED') {
+            unusedArr.remove(item);
+        } else if (action === 'REMOVE_FROM_USED') {
+            usedArr.remove(item);
         }
+
+        this.generateNPCNameTables(containerEl, unusedArr, usedArr);
+        await this.plugin.saveSettings();
     }
-
-    private generateInnImportExportOption(containerDiv: HTMLElement) {
-        if (Platform.isDesktopApp) {
-            const importExportFile = new Setting(containerDiv)
-                .setName("Import | Export")
-                .setDesc("Import A Json File With Supported information");
-
-            const inputAppfile = createEl("input", {
-                attr: {
-                    type: "file",
-                    name: "inn",
-                    accept: ".json",
-                    multiple: false
-                }
-            });
-
-            inputAppfile.onchange = async () => {
-                const { files } = inputAppfile;
-                if (files === null || !files.length) return;
-                try {
-                    const file = files[0] as FileWithPath;
-                    importJSON(file.path, async (data) => {
-                        this.plugin.settings.innSettings = data as InnGeneratorSettings;
-                        this.generateInnSettingsBlock(this.innDiv, true);
-                        await this.plugin.saveSettings();
-                    });
-
-                } catch (e) { /* empty */ }
-            }
-
-            importExportFile.addButton((b) => {
-                b.setButtonText("Choose Import File").setTooltip(
-                    "Import Json File for the Generator"
-                ).buttonEl.appendChild(inputAppfile)
-                b.buttonEl.addClass("FCGInput");
-                b.onClick(() => inputAppfile.click());
-            }).addButton((b) => {
-                b.setButtonText("Export Section To File").setCta()
-                    .onClick(() => {
-                        exportJSON(this.plugin.settings.innSettings);
-                    })
-            });
-        }
-    }
-
-    private generateNPCImportExportOption(containerDiv: HTMLElement) {
-        if (Platform.isDesktopApp) {
-            const importExportFile = new Setting(containerDiv)
-                .setName("Import | Export")
-                .setDesc("Import A Json File With Supported information");
-
-            const inputAppfile = createEl("input", {
-                attr: {
-                    type: "file",
-                    name: "currency",
-                    accept: ".json",
-                    multiple: false
-                }
-            });
-
-            inputAppfile.onchange = async () => {
-                const { files } = inputAppfile;
-                if (files === null || !files.length) return;
-                try {
-                    const file = files[0] as FileWithPath;
-                    importJSON(file.path, async (data: {'Used': NPCGeneratorSettings, 'Unused': NPCGeneratorSettings}) => {
-                        const usedData = data['Used'] as NPCGeneratorSettings;
-                        const unusedData = data['Unused'] as NPCGeneratorSettings;
-                        
-                        if(data && usedData && unusedData) {
-                            this.plugin.settings.usedNpcSettings = usedData;
-                            this.plugin.settings.npcSettings = unusedData;
-                            await this.plugin.saveSettings();
-                        }
-                        
-                        this.npcDiv.innerHTML = '';
-                        this.generateNpcSettingsBlock(this.npcDiv, true);
-                    });
-
-                } catch (e) { /* empty */ }
-            }
-
-            importExportFile.addButton((b) => {
-                b.setButtonText("Choose Import File").setTooltip(
-                    "Import Json File for the Generator"
-                ).buttonEl.appendChild(inputAppfile)
-                b.buttonEl.addClass("FCGInput");
-                b.onClick(() => inputAppfile.click());
-            }).addButton((b) => {
-                b.setButtonText("Export Section To File").setCta()
-                    .onClick(() => {
-                        exportJSON({ 'Used': this.plugin.settings.usedNpcSettings, 'Unused': this.plugin.settings.npcSettings });
-                    })
-            });
-        }
-    }
-
 }

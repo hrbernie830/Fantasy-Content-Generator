@@ -70,7 +70,7 @@ export class LootGeneratorComponent {
         const createPageButtonDiv = overallActionButtonsDiv.createDiv();
         const createPageButton = new ButtonComponent(createPageButtonDiv);
         createPageButton.setButtonText("Save to Files").setCta().onClick(() => {
-            this.service.generateLootNoteSheet(this.createLootLists);
+            this.service.generateLootNoteSheet(this.plugin.settings.saveToFileLocation, this.createLootLists);
         });
         createPageButtonDiv.hidden = true;
 

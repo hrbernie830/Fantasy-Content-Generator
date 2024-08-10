@@ -167,7 +167,7 @@ export class NPCGeneratorComponent {
             this.onFirstNameLockButtonClicked(true);
             this.onFamilyNameLockButtonClicked(true);
             this.onFunFactLockButtonClicked(true);
-            npcGenerationService.generateCharacterNoteSheet(this.currentNPC);
+            npcGenerationService.generateCharacterNoteSheet(this.plugin.settings.saveToFileLocation, this.currentNPC);
         });
         createPageButtonDiv.hidden = true;
 

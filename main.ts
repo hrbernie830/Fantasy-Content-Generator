@@ -1,8 +1,8 @@
 import { GeneratorModal } from 'src/core/main-modal';
 import { MarkdownView, Notice, Plugin, Editor } from 'obsidian';
 import { FantasyPluginSettings } from 'src/types/settings/FantasyPluginSettings';
-import { DEFAULT_SETTINGS } from 'src/shared/default-settings/DefaultSetting';
 import { SettingsTab } from 'src/features/components/settings/SettingsTab';
+import { generateDefaultSettings } from 'src/shared/utilities/shared-utils';
 
 export default class FantasyPlugin extends Plugin {
 	settings: FantasyPluginSettings;
@@ -25,7 +25,7 @@ export default class FantasyPlugin extends Plugin {
 		});
 
 		// This creates an icon in the left ribbon to access the modal for the Fantasy Content Generator.
-		this.addRibbonIcon('book', 'Fantasy Generators', (evt: MouseEvent) => {
+		this.addRibbonIcon('blocks', 'Fantasy Generators', (evt: MouseEvent) => {
 			// Called when the user clicks the icon.
 			new GeneratorModal(this.app, (result) => {
 				const copyContent = async () => {
@@ -58,7 +58,7 @@ export default class FantasyPlugin extends Plugin {
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		this.settings = Object.assign({}, generateDefaultSettings(), await this.loadData());
 	}
 
 	async saveSettings() {

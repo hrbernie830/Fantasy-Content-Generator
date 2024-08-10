@@ -60,19 +60,19 @@ export class GeneratorModal extends Modal {
                     npcGeneratorComponent.createView();
                     break;
                 case "inn":
-                    new BaseGeneratorComponent(this.contentDiv, new InnGeneratorService(), this.plugin.settings.innSettings).setLeftAligned();
+                    new BaseGeneratorComponent(this.plugin, this.contentDiv, new InnGeneratorService(), this.plugin.settings.innSettings).setLeftAligned();
                     break;
                 case "ship":
-                    new BaseGeneratorComponent(this.contentDiv, new ShipGeneratorService());
+                    new BaseGeneratorComponent(this.plugin, this.contentDiv, new ShipGeneratorService());
                     break;
                 case "religion":
-                    new BaseGeneratorComponent(this.contentDiv, new ReligionGeneratorService());
+                    new BaseGeneratorComponent(this.plugin, this.contentDiv, new ReligionGeneratorService());
                     break;
                 case "drink":
-                    new BaseGeneratorComponent(this.contentDiv, new DrinkGeneratorService(), this.plugin.settings.drinkSettings);
+                    new BaseGeneratorComponent(this.plugin, this.contentDiv, new DrinkGeneratorService(), this.plugin.settings.drinkSettings);
                     break;
                 case "metal":
-                    new BaseGeneratorComponent(this.contentDiv, new MetalGeneratorService());
+                    new BaseGeneratorComponent(this.plugin, this.contentDiv, new MetalGeneratorService());
                     break;
                 case "loot (experimental)":
                     //new BaseGeneratorComponent(this.contentDiv, new LootGeneratorService(), this.plugin.settings);

@@ -1,8 +1,7 @@
-import * as fs from "fs";
 import { Inn } from "src/types/inn/Inn";
 import { InnGeneratorSettings } from "../../../types/inn/InnGeneratorSettings";
 import { BaseGeneratorService } from "src/features/components/base-generator/base-generation-service";
-
+import * as FileUtils from '../../../shared/utilities/file-utils';
 
 export class InnGeneratorService extends BaseGeneratorService {
   GENERATE_NOTE_HIDDEN = false;
@@ -51,9 +50,9 @@ export class InnGeneratorService extends BaseGeneratorService {
     return new Inn(innGenerationSettings.prefixes[prefixIndex] + " " + innGenerationSettings.nouns[nounIndex] + " " + innGenerationSettings.innType[innTypeIndex], innGenerationSettings.desc[descriptionIndex], [innGenerationSettings.rumors[rumorsIndexes[0]], innGenerationSettings.rumors[rumorsIndexes[1]], innGenerationSettings.rumors[rumorsIndexes[2]]]);
   }
 
-
-  generateNote(item: Inn) {
-    const generatedInnFolder = "C:\\Users\\bernh\\iCloudDrive\\iCloud~md~obsidian\\Campaign Notes\\z_Generated\\Inns\\" + item.name + ".md";
+  generateNote(fileLocation: string, item: Inn) {
+    const generatedInnFolder = fileLocation + "\\Inns";
+    const fileName = item.name + ".md";
     
     const overviewContent = '## Overview\r\n\r\n**Location**: \r\n\r\n\r\n';
     const descriptionContent = "## Description\r\n\r\n" + item.description + "\r\n\r\n\r\n";
@@ -68,14 +67,7 @@ export class InnGeneratorService extends BaseGeneratorService {
 
 
     const fullContent = overviewContent + descriptionContent + rumorsContent + importantPeopleContent;
-
-    fs.writeFile(generatedInnFolder, fullContent, err => {
-      if (err) {
-        console.error(err);
-      } else {
-        // file written successfully
-      }
-    });
+    FileUtils.saveDataToFile(generatedInnFolder, fileName, fullContent)
   }
 }
 

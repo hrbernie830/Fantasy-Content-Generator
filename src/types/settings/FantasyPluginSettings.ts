@@ -4,6 +4,7 @@ import { LootGeneratorSettings } from 'src/types/loot/LootGeneratorSettings';
 import { NPCGeneratorSettings } from 'src/types/npc/NPCGeneratorSettings';
 
 export interface FantasyPluginSettings {
+    saveToFileLocation: string;
     enableCurrency: boolean;
     currencyFrequency: number;
     innSettings: InnGeneratorSettings;

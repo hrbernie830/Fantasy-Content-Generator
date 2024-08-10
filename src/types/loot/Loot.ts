@@ -17,7 +17,7 @@ export class Loot extends BaseGeneratedItem {
         for(const rarity in this.itemMapping) {
             const rarityItemList = this.itemMapping[rarity as keyof typeof this.itemMapping];
             if(rarityItemList.length > 0 || !skipEmpty) {
-                listString = listString + "\r\n##### " + rarity.toUpperCase() + this.getRarityListAsString(rarity, spacer, '', skipEmpty) + "\r\n";
+                listString = listString + "\r\n##### " + rarity + this.getRarityListAsString(rarity, spacer, '', skipEmpty) + "\r\n";
             }
             
         }
@@ -29,7 +29,6 @@ export class Loot extends BaseGeneratedItem {
         const rarityItemList = this.itemMapping[rarity as keyof typeof this.itemMapping];
         if(rarityItemList.length > 0 || !skipEmpty) {
             for(const item of rarityItemList) {
-                console.log(item);
                 let unmodifiedItemName = item.substring(0, item.indexOf(' ['));
                 let itemModification = '';
                 let source = item.substring(item.indexOf(' [') + 2, item.indexOf(']'));
@@ -43,11 +42,7 @@ export class Loot extends BaseGeneratedItem {
                     source = item.substring(item.indexOf(' [') + 2, item.indexOf(']'));
                 }
                 
-                console.log(unmodifiedItemName)
-                console.log(itemModification)
-                console.log(source)
                 const fullItemToPrint = '[[' + unmodifiedItemName + '|' + unmodifiedItemName + itemModification + ']] ([[' + source + ']])';
-                console.log(fullItemToPrint);
                 retVal = retVal + spacer + fullItemToPrint;
             }
         }
