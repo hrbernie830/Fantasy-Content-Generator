@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NPC } from "src/types/npc/NPC";
 import { NPCGeneratorSettings } from "../../../types/npc/NPCGeneratorSettings";
 import { NPCRaceSettings } from "../../../types/npc/NPCRaceSettings";
@@ -88,10 +90,10 @@ export function getFunFactOptions(npcGeneratorSettings: NPCGeneratorSettings, us
 
 export async function moveFunFactToUsedSetting(funFact: string | undefined, plugin: FantasyPlugin) {
     if(funFact !== undefined) {
-        const index = plugin.settings.npcSettings.funFactList.indexOf(funFact);
+        const index = plugin.settings.npcSettings.available.funFactList.indexOf(funFact);
         if(index > -1) {
-            const removedFrom = plugin.settings.npcSettings.funFactList.splice(index, 1);
-            plugin.settings.usedNpcSettings.funFactList.push(removedFrom[0]);
+            const removedFrom = plugin.settings.npcSettings.available.funFactList.splice(index, 1);
+            plugin.settings.npcSettings.used.funFactList.push(removedFrom[0]);
         }
 
     }
@@ -99,8 +101,8 @@ export async function moveFunFactToUsedSetting(funFact: string | undefined, plug
 
 export async function moveNameToUsedSetting(name: string | undefined, plugin: FantasyPlugin, race: string, isFamilyName?: boolean) {
     if(name !== undefined) {
-        const raceSettingsToRemoveFrom = getRaceBasedGeneratorSettings(plugin.settings.npcSettings, race);
-        const raceSettingsAddTo = getRaceBasedGeneratorSettings(plugin.settings.usedNpcSettings, race);
+        const raceSettingsToRemoveFrom = getRaceBasedGeneratorSettings(plugin.settings.npcSettings.available, race);
+        const raceSettingsAddTo = getRaceBasedGeneratorSettings(plugin.settings.npcSettings.used, race);
 
         if(isFamilyName) {
             const index = raceSettingsToRemoveFrom.family.indexOf(name);

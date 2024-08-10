@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as fs from 'fs';
 import { FileSystemAdapter, Notice } from 'obsidian';
 
@@ -13,7 +14,6 @@ export function importJSON(path: string, callback: (data: object) => void): void
     });
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function exportJSON(data: any) {
     const json = JSON.stringify(data);
     const blob = new Blob([json], { type: 'application/json' });

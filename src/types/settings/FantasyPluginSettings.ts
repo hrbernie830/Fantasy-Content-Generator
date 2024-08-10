@@ -5,11 +5,8 @@ import { NPCGeneratorSettings } from 'src/types/npc/NPCGeneratorSettings';
 
 export interface FantasyPluginSettings {
     saveToFileLocation: string;
-    enableCurrency: boolean;
-    currencyFrequency: number;
     innSettings: InnGeneratorSettings;
     drinkSettings: DrinkGeneratorSettings;
     lootSettings: LootGeneratorSettings;
-    npcSettings: NPCGeneratorSettings;
-    usedNpcSettings: NPCGeneratorSettings;
+    npcSettings: { available: NPCGeneratorSettings, used: NPCGeneratorSettings }
 }

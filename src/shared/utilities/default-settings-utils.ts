@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as DEFAULT_INN_SETTINGS from "src/types/inn/InnDefaultSettings";
 import * as DEFAULT_DRINK_SETTINGS from "src/types/drink/DrinkDefaultSettings";
 import * as DEFAULT_ITEM_SETTINGS from "src/types/loot/LootDefaultSettings";

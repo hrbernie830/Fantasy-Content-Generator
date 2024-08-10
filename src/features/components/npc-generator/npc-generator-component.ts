@@ -197,7 +197,7 @@ export class NPCGeneratorComponent {
             this.reenableBuutton(this.familyNameLockButton);
             this.reenableBuutton(this.funFactLockButton);
         }
-        this.currentNPC = npcGenerationService.generate(this.lockedNPC, this.plugin.settings.npcSettings, this.plugin.settings.usedNpcSettings);
+        this.currentNPC = npcGenerationService.generate(this.lockedNPC, this.plugin.settings.npcSettings.available, this.plugin.settings.npcSettings.used);
 
         this.genSettings.gender = this.currentNPC.getGenderOrDefault('');
         this.genSettings.race = this.currentNPC.getRaceOrDefault('');

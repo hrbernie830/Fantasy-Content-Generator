@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DrinkGeneratorSettings } from "src/types/drink/DrinkGeneratorSettings";
 import { InnGeneratorSettings } from "src/types/inn/InnGeneratorSettings";
 import { LootGeneratorSettings } from "src/types/loot/LootGeneratorSettings";
@@ -24,12 +25,12 @@ export function fetchRandomElementFromList(list: any[]): any {
 export function generateDefaultSettings(): FantasyPluginSettings {
     return {
       saveToFileLocation: FileUtils.getVaultLocation() + '\\z_Generated',
-      enableCurrency: false,
       innSettings: new InnGeneratorSettings(true),
-      currencyFrequency: 50,
       drinkSettings: new DrinkGeneratorSettings(true),
       lootSettings: new LootGeneratorSettings(true),
-      npcSettings: new NPCGeneratorSettings(true, true),
-      usedNpcSettings: new NPCGeneratorSettings(false, false) // TODO - switch to True,
+      npcSettings: {
+        available: new NPCGeneratorSettings(true, true),
+        used: new NPCGeneratorSettings(false, false) // TODO - switch to True,
+      }
     };
   }

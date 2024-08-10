@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import FantasyPlugin from "main";
 import { PluginSettingTab, App, Setting } from "obsidian";
 import * as FileUtils from '../../../shared/utilities/file-utils';
@@ -178,23 +179,23 @@ export class SettingsTab extends PluginSettingTab {
             const unusedData = data['Unused'] as NPCGeneratorSettings;
             
             if(data && usedData && unusedData) {
-                this.plugin.settings.usedNpcSettings = usedData;
-                this.plugin.settings.npcSettings = unusedData;
+                this.plugin.settings.npcSettings.used = usedData;
+                this.plugin.settings.npcSettings.available = unusedData;
                 await this.plugin.saveSettings();
             }
             
             this.npcDiv.innerHTML = '';
             this.generateNpcSettingsBlock(this.npcDiv, true);
         }
-        const exportFn = () => {FileUtils.exportJSON({ 'Used': this.plugin.settings.usedNpcSettings, 'Unused': this.plugin.settings.npcSettings })};
+        const exportFn = () => {FileUtils.exportJSON({ 'Used': this.plugin.settings.npcSettings.used, 'Unused': this.plugin.settings.npcSettings.available })};
         new ImportExportOption(npcSettingsExpandedDiv, importFn, exportFn).generate();
         
-        this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.human, this.plugin.settings.usedNpcSettings.human);
-        this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.elf, this.plugin.settings.usedNpcSettings.elf);
-        this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.dwarf, this.plugin.settings.usedNpcSettings.dwarf);
-        this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.halfling, this.plugin.settings.usedNpcSettings.halfling);
-        this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.goblin, this.plugin.settings.usedNpcSettings.goblin);
-        this.generateNPCFunFactSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings, this.plugin.settings.usedNpcSettings);
+        this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.available.human, this.plugin.settings.npcSettings.used.human);
+        this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.available.elf, this.plugin.settings.npcSettings.used.elf);
+        this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.available.dwarf, this.plugin.settings.npcSettings.used.dwarf);
+        this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.available.halfling, this.plugin.settings.npcSettings.used.halfling);
+        this.generateNPCRaceSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.available.goblin, this.plugin.settings.npcSettings.used.goblin);
+        this.generateNPCFunFactSettingsBlock(npcSettingsExpandedDiv, this.plugin.settings.npcSettings.available, this.plugin.settings.npcSettings.used);
     }
 
 
