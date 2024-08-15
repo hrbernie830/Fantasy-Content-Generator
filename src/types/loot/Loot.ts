@@ -29,21 +29,23 @@ export class Loot extends BaseGeneratedItem {
         const rarityItemList = this.itemMapping[rarity as keyof typeof this.itemMapping];
         if(rarityItemList.length > 0 || !skipEmpty) {
             for(const item of rarityItemList) {
-                let unmodifiedItemName = item.substring(0, item.indexOf(' ['));
-                let itemModification = '';
-                let source = item.substring(item.indexOf(' [') + 2, item.indexOf(']'));
-                if(item.contains(',')) {
-                    unmodifiedItemName = item.substring(0, item.indexOf(','));
-                    itemModification = ', ' + item.substring(item.indexOf(',') + 2, item.indexOf(' ['));
-                    source = item.substring(item.indexOf(' [') + 2, item.indexOf(']'));
-                } else if(item.contains('(')) {
-                    unmodifiedItemName = item.substring(0, item.indexOf('('));
-                    itemModification = '(' + item.substring(item.indexOf('(') + 1, item.indexOf(' [') - 1) + ')';
-                    source = item.substring(item.indexOf(' [') + 2, item.indexOf(']'));
+                if(item) {
+                    let unmodifiedItemName = item.substring(0, item.indexOf(' ['));
+                    let itemModification = '';
+                    let source = item.substring(item.indexOf(' [') + 2, item.indexOf(']'));
+                    if(item.contains(',')) {
+                        unmodifiedItemName = item.substring(0, item.indexOf(','));
+                        itemModification = ', ' + item.substring(item.indexOf(',') + 2, item.indexOf(' ['));
+                        source = item.substring(item.indexOf(' [') + 2, item.indexOf(']'));
+                    } else if(item.contains('(')) {
+                        unmodifiedItemName = item.substring(0, item.indexOf('('));
+                        itemModification = '(' + item.substring(item.indexOf('(') + 1, item.indexOf(' [') - 1) + ')';
+                        source = item.substring(item.indexOf(' [') + 2, item.indexOf(']'));
+                    }
+                    
+                    const fullItemToPrint = '[[' + unmodifiedItemName + '|' + unmodifiedItemName + itemModification + ']] ([[' + source + ']])';
+                    retVal = retVal + spacer + fullItemToPrint;
                 }
-                
-                const fullItemToPrint = '[[' + unmodifiedItemName + '|' + unmodifiedItemName + itemModification + ']] ([[' + source + ']])';
-                retVal = retVal + spacer + fullItemToPrint;
             }
         }
         

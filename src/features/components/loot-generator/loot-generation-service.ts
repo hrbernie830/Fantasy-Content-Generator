@@ -47,7 +47,7 @@ export class LootGeneratorService extends BaseGeneratorService {
     }
 
     private getAllObjectsOfRarity(rarity: string, lootSettings: LootGeneratorSettings) {
-        const itemSourceListAtRarity = lootSettings[rarity as keyof typeof lootSettings];
+        const itemSourceListAtRarity = lootSettings.itemList[rarity as keyof typeof lootSettings];
         const listOfAllItems = [];
         for(const source in itemSourceListAtRarity) {
             const itemListInSource = itemSourceListAtRarity[source as keyof typeof itemSourceListAtRarity];
